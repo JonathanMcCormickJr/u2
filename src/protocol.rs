@@ -1,4 +1,4 @@
-use crate::util::*;
+/*use crate::util::*;
 use crate::messages::*;
 use crate::register::*;
 use crate::authorization::*;
@@ -143,4 +143,4 @@ impl U2f {
                 Err(e) => return Err(e),
             }
         }       
-}
+}*/

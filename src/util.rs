@@ -1,3 +1,4 @@
+/*
 use chrono::prelude::*;
 use time::Duration;
 use openssl::rand;
@@ -18,6 +19,7 @@ pub fn generate_challenge(size: usize) -> Result<Vec<u8>> {
     Ok(bytes)
 }
 
+/* FIX ME */
 pub fn expiration(timestamp: String) -> Duration {
     let now: DateTime<Utc> = Utc::now();
 
@@ -25,6 +27,7 @@ pub fn expiration(timestamp: String) -> Duration {
 
     now.signed_duration_since(ts.unwrap())
 }
+
 
 // Decode initial bytes of buffer as ASN and return the length of the encoded structure.
 // http://en.wikipedia.org/wiki/X.690
@@ -59,4 +62,4 @@ pub fn get_encoded(data: &[u8]) -> String {
     let encoded: String = encode_config(data, URL_SAFE_NO_PAD);
 
     encoded.trim_end_matches('=').to_string()
-}
+}*/
