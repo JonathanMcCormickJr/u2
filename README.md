@@ -1,5 +1,11 @@
 # Rust U2F Library &emsp; [![MIT licensed]][MIT] [![Apache-2.0 licensed]][APACHE]
 
+**DOES NOT COMPILE**
+
+**IS NOT TESTED**
+
+**DO NOT USE (YET)**
+
 Forked from the `u2f` crate, which (as of this writing) has not been updated in years.
 
 This is still a work in progress as I journey through the existing code and adapt it to use up-to-date dependencies and hopefully compile. I also will need to add unit tests, which are currently lacking. 

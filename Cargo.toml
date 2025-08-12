@@ -7,7 +7,7 @@ description = "Rust Universal 2nd Factor (U2F) Library. A fork of the `u2f` crat
 license = "MIT OR Apache-2.0"
 keywords = ["authentication", "encryption", "U2F", "2fa"]
 categories = ["authentication"]
-repository = ""
+repository = "https://github.com/JonathanMcCormickJr/u2"
 readme = "README.md"
 
 [lib]
