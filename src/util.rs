@@ -1,5 +1,4 @@
-/*
-use chrono::prelude::*;
+use chrono::{prelude::*, TimeDelta};
 use time::Duration;
 use openssl::rand;
 use bytes::{Bytes};
@@ -20,7 +19,7 @@ pub fn generate_challenge(size: usize) -> Result<Vec<u8>> {
 }
 
 /* FIX ME */
-pub fn expiration(timestamp: String) -> Duration {
+pub fn expiration(timestamp: String) -> TimeDelta {
     let now: DateTime<Utc> = Utc::now();
 
     let ts = timestamp.parse::<DateTime<Utc>>();
@@ -62,4 +61,4 @@ pub fn get_encoded(data: &[u8]) -> String {
     let encoded: String = encode_config(data, URL_SAFE_NO_PAD);
 
     encoded.trim_end_matches('=').to_string()
-}*/
+}

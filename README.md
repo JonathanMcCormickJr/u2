@@ -1,8 +1,8 @@
 # Rust U2F Library &emsp; [![MIT licensed]][MIT] [![Apache-2.0 licensed]][APACHE]
 
-**DOES NOT COMPILE**
+**CODE BARELY COMPILES**
 
-**IS NOT TESTED**
+**CODE IS NOT TESTED**
 
 **DO NOT USE (YET)**
 

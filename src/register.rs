@@ -1,4 +1,4 @@
-/*use bytes::{Bytes, BufMut};
+use bytes::{Bytes, BufMut};
 use openssl::sha::sha256;
 use byteorder::{ByteOrder, BigEndian};
 
@@ -89,4 +89,4 @@ pub fn get_registered_key(app_id: String, key_handle: Vec<u8>) -> RegisteredKey 
         version: U2F_V2.into(),
         key_handle: Some(get_encoded(key_handle.as_slice()))
     }
-}*/
+}

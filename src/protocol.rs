@@ -1,10 +1,11 @@
-/*use crate::util::*;
+use crate::util::*;
 use crate::messages::*;
 use crate::register::*;
 use crate::authorization::*;
 
 use base64::{encode_config, decode_config, URL_SAFE_NO_PAD};
 use chrono::prelude::*;
+use chrono::TimeDelta;
 use time::Duration;
 use crate::u2ferror::U2fError;
 
@@ -77,7 +78,7 @@ impl U2f {
     }
 
     pub fn register_response(&self, challenge: Challenge, response: RegisterResponse) -> Result<Registration> {
-        if expiration(challenge.timestamp) > Duration::seconds(300) {
+        if expiration(challenge.timestamp) > TimeDelta::seconds(300) {
             return Err(U2fError::ChallengeExpired);
         }
 
@@ -114,7 +115,7 @@ impl U2f {
     }  
 
     pub fn sign_response(&self, challenge: Challenge, reg: Registration, sign_resp: SignResponse, counter: u32) -> Result<u32> {
-        if expiration(challenge.timestamp) > Duration::seconds(300) {
+        if expiration(challenge.timestamp) > TimeDelta::seconds(300) {
             return Err(U2fError::ChallengeExpired);
         }
 
@@ -143,4 +144,4 @@ impl U2f {
                 Err(e) => return Err(e),
             }
         }       
-}*/
+}
