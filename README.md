@@ -18,11 +18,7 @@ Rust [FIDO U2F](https://fidoalliance.org/specifications/download/) library is a 
 ## Usage
 
 Add this to your Cargo.toml
-
-```toml
-[dependencies]
-u2f = "0.2"
-```
+[ADD STUFF HERE]
 
 Make sure that you have read [Using a U2F library](https://developers.yubico.com/U2F/Libraries/Using_a_library.html) before continuing.
 
