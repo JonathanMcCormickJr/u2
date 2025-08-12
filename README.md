@@ -27,3 +27,7 @@ Add this to your Cargo.toml
 Make sure that you have read [Using a U2F library](https://developers.yubico.com/U2F/Libraries/Using_a_library.html) before continuing.
 
 See provided [example](https://github.com/wisespace-io/u2f-rs/tree/master/example)
+
+## Contributing
+
+All constructive contributions are welcome!! Please raise an issue or make a pull request on GitHub. --Jonathan
