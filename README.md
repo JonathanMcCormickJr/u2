@@ -1,5 +1,7 @@
 # Rust U2F Library &emsp; [![Build Status]][travis] [![Latest Version]][crates.io] [![MIT licensed]][MIT] [![Apache-2.0 licensed]][APACHE]
 
+Forked from the `u2f` crate, which (as of this writing) has not been updated in years.
+
 [Build Status]: https://travis-ci.org/wisespace-io/u2f-rs.png?branch=master
 [travis]: https://travis-ci.org/wisespace-io/u2f-rs
 [Latest Version]: https://img.shields.io/crates/v/u2f.svg
