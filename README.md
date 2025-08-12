@@ -1,4 +1,4 @@
-# Rust U2F Library &emsp; [![Build Status]][travis] [![Latest Version]][crates.io] [![MIT licensed]][MIT] [![Apache-2.0 licensed]][APACHE]
+# Rust U2F Library &emsp; [![MIT licensed]][MIT] [![Apache-2.0 licensed]][APACHE]
 
 Forked from the `u2f` crate, which (as of this writing) has not been updated in years.
 
