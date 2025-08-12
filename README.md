@@ -4,10 +4,6 @@ Forked from the `u2f` crate, which (as of this writing) has not been updated in 
 
 This is still a work in progress as I journey through the existing code and adapt it to use up-to-date dependencies and hopefully compile. I also will need to add unit tests, which are currently lacking. 
 
-[Build Status]: https://travis-ci.org/wisespace-io/u2f-rs.png?branch=master
-[travis]: https://travis-ci.org/wisespace-io/u2f-rs
-[Latest Version]: https://img.shields.io/crates/v/u2f.svg
-[crates.io]: https://crates.io/crates/u2f
 [MIT licensed]: https://img.shields.io/badge/License-MIT-blue.svg
 [MIT]: ./LICENSE-MIT
 [Apache-2.0 licensed]: https://img.shields.io/badge/License-Apache%202.0-blue.svg
