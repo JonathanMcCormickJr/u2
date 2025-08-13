@@ -6,7 +6,6 @@ use crate::authorization::*;
 use base64::{encode_config, decode_config, URL_SAFE_NO_PAD};
 use chrono::prelude::*;
 use chrono::TimeDelta;
-use time::Duration;
 use crate::u2ferror::U2fError;
 
 type Result<T> = ::std::result::Result<T, U2fError>;

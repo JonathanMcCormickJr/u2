@@ -33,7 +33,7 @@ pub fn parse_sign_response(app_id: String, client_data: Vec<u8>, public_key: Vec
     let mut msg = vec![];
     msg.put(app_id_hash.as_ref());
     msg.put(user_presence_flag.clone()); 
-    msg.put(counter.clone());  
+    msg.put(counter);  
     msg.put(client_data_hash.as_ref());
 
     let public_key = super::crypto::NISTP256Key::from_bytes(&public_key)?;

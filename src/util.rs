@@ -1,10 +1,8 @@
 use chrono::{prelude::*, TimeDelta};
-use time::Duration;
 use openssl::rand;
 use bytes::{Bytes};
 use base64::{encode_config, URL_SAFE_NO_PAD};
 use crate::u2ferror::U2fError;
-use std::convert::TryFrom;
 
 /// The `Result` type used in this crate.
 type Result<T> = ::std::result::Result<T, U2fError>;
@@ -18,7 +16,6 @@ pub fn generate_challenge(size: usize) -> Result<Vec<u8>> {
     Ok(bytes)
 }
 
-/* FIX ME */
 pub fn expiration(timestamp: String) -> TimeDelta {
     let now: DateTime<Utc> = Utc::now();
 
