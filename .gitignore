@@ -1,0 +1,10 @@
+# ── Cargo build output ───────────────────────
+/target/               # ignores everything under the target directory
+!/target/.gitkeep      # optional - keep the folder in the repo if you want it tracked
+
+# If you only want to ignore the release binaries (and keep debug builds):
+# /target/debug/
+# /target/release/
+
+# ── Optional, often ignored for libraries ─────
+Cargo.lock             # usually ignored for reusable crates; keep it for binaries/apps
