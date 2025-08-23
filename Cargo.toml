@@ -1,0 +1,27 @@
+[package]
+name = "u2"
+version = "0.1.3"
+edition = "2024"
+authors = ["Flavio Oliveira, et al (2017-2020) as `u2f`", "Jonathan A. McCormick, Jr. (2025-) as `u2`"]
+description = "Rust Universal 2nd Factor (U2F) Library. A fork of the `u2f` crate."
+license = "MIT OR Apache-2.0"
+keywords = ["authentication", "encryption", "U2F", "2fa"]
+categories = ["authentication"]
+repository = "https://github.com/JonathanMcCormickJr/u2"
+documentation = "https://docs.rs/u2/latest/u2/"
+readme = "README.md"
+
+[lib]
+name = "u2"
+path = "src/lib.rs"
+
+[dependencies]
+time = "0.3"
+bytes = "0.4"
+base64 = "0.11"
+chrono = "0.4"
+serde = "1.0"
+serde_json = "1.0"
+serde_derive = "1.0"
+byteorder = "1.3"
+openssl = "0.10"

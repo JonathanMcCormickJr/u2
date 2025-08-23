@@ -1,0 +1,496 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Read bytes from a buffer."><title>Buf in bytes::buf - Rust</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-1a91846b.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="bytes" data-themes="" data-resource-suffix="" data-rustdoc-version="1.88.0 (6b00bc388 2025-06-23)" data-channel="1.88.0" data-search-js="search-f7877310.js" data-settings-js="settings-5514c975.js" ><script src="../../static.files/storage-4e99c027.js"></script><script defer src="sidebar-items.js"></script><script defer src="../../static.files/main-7ef8a74a.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc trait"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle" title="show sidebar"></button></nav><nav class="sidebar"><div class="sidebar-crate"><h2><a href="../../bytes/index.html">bytes</a><span class="version">0.4.12</span></h2></div><div class="sidebar-elems"><section id="rustdoc-toc"><h2 class="location"><a href="#">Buf</a></h2><h3><a href="#required-methods">Required Methods</a></h3><ul class="block"><li><a href="#tymethod.advance" title="advance">advance</a></li><li><a href="#tymethod.bytes" title="bytes">bytes</a></li><li><a href="#tymethod.remaining" title="remaining">remaining</a></li></ul><h3><a href="#provided-methods">Provided Methods</a></h3><ul class="block"><li><a href="#method.by_ref" title="by_ref">by_ref</a></li><li><a href="#method.bytes_vec" title="bytes_vec">bytes_vec</a></li><li><a href="#method.chain" title="chain">chain</a></li><li><a href="#method.collect" title="collect">collect</a></li><li><a href="#method.copy_to_slice" title="copy_to_slice">copy_to_slice</a></li><li><a href="#method.get_f32_be" title="get_f32_be">get_f32_be</a></li><li><a href="#method.get_f32_le" title="get_f32_le">get_f32_le</a></li><li><a href="#method.get_f64_be" title="get_f64_be">get_f64_be</a></li><li><a href="#method.get_f64_le" title="get_f64_le">get_f64_le</a></li><li><a href="#method.get_i8" title="get_i8">get_i8</a></li><li><a href="#method.get_i16_be" title="get_i16_be">get_i16_be</a></li><li><a href="#method.get_i16_le" title="get_i16_le">get_i16_le</a></li><li><a href="#method.get_i32_be" title="get_i32_be">get_i32_be</a></li><li><a href="#method.get_i32_le" title="get_i32_le">get_i32_le</a></li><li><a href="#method.get_i64_be" title="get_i64_be">get_i64_be</a></li><li><a href="#method.get_i64_le" title="get_i64_le">get_i64_le</a></li><li><a href="#method.get_int_be" title="get_int_be">get_int_be</a></li><li><a href="#method.get_int_le" title="get_int_le">get_int_le</a></li><li><a href="#method.get_u8" title="get_u8">get_u8</a></li><li><a href="#method.get_u16_be" title="get_u16_be">get_u16_be</a></li><li><a href="#method.get_u16_le" title="get_u16_le">get_u16_le</a></li><li><a href="#method.get_u32_be" title="get_u32_be">get_u32_be</a></li><li><a href="#method.get_u32_le" title="get_u32_le">get_u32_le</a></li><li><a href="#method.get_u64_be" title="get_u64_be">get_u64_be</a></li><li><a href="#method.get_u64_le" title="get_u64_le">get_u64_le</a></li><li><a href="#method.get_uint_be" title="get_uint_be">get_uint_be</a></li><li><a href="#method.get_uint_le" title="get_uint_le">get_uint_le</a></li><li><a href="#method.has_remaining" title="has_remaining">has_remaining</a></li><li><a href="#method.iter" title="iter">iter</a></li><li><a href="#method.reader" title="reader">reader</a></li><li><a href="#method.take" title="take">take</a></li></ul><h3><a href="#foreign-impls">Implementations on Foreign Types</a></h3><ul class="block"><li><a href="#impl-Buf-for-%26mut+T" title="&#38;&#39;a mut T">&#38;&#39;a mut T</a></li><li><a href="#impl-Buf-for-Box%3CT%3E" title="Box&#60;T&#62;">Box&#60;T&#62;</a></li><li><a href="#impl-Buf-for-Cursor%3CT%3E" title="Cursor&#60;T&#62;">Cursor&#60;T&#62;</a></li><li><a href="#impl-Buf-for-Option%3C%5Bu8;+1%5D%3E" title="Option&#60;[u8; 1]&#62;">Option&#60;[u8; 1]&#62;</a></li><li><a href="#impl-Buf-for-VecDeque%3Cu8%3E" title="VecDeque&#60;u8&#62;">VecDeque&#60;u8&#62;</a></li></ul><h3><a href="#implementors">Implementors</a></h3></section><div id="rustdoc-modnav"><h2><a href="index.html">In bytes::<wbr>buf</a></h2></div></div></nav><div class="sidebar-resizer"></div><main><div class="width-limiter"><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><div class="rustdoc-breadcrumbs"><a href="../index.html">bytes</a>::<wbr><a href="index.html">buf</a></div><h1>Trait <span class="trait">Buf</span><button id="copy-path" title="Copy item path to clipboard">Copy item path</button></h1><rustdoc-toolbar></rustdoc-toolbar><span class="sub-heading"><a class="src" href="../../src/bytes/buf/buf.rs.html#64-1053">Source</a> </span></div><pre class="rust item-decl"><code>pub trait Buf {
+<details class="toggle type-contents-toggle"><summary class="hideme"><span>Show 34 methods</span></summary>    // Required methods
+    fn <a href="#tymethod.remaining" class="fn">remaining</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/1.88.0/std/primitive.usize.html">usize</a>;
+<span class="item-spacer"></span>    fn <a href="#tymethod.bytes" class="fn">bytes</a>(&amp;self) -&gt; &amp;[<a class="primitive" href="https://doc.rust-lang.org/1.88.0/std/primitive.u8.html">u8</a>] <a href="#" class="tooltip" data-notable-ty="&amp;[u8]">ⓘ</a>;
+<span class="item-spacer"></span>    fn <a href="#tymethod.advance" class="fn">advance</a>(&amp;mut self, cnt: <a class="primitive" href="https://doc.rust-lang.org/1.88.0/std/primitive.usize.html">usize</a>);
+
+    // Provided methods
+    fn <a href="#method.bytes_vec" class="fn">bytes_vec</a>&lt;'a&gt;(&amp;'a self, dst: &amp;mut [&amp;'a <a class="struct" href="../../iovec/struct.IoVec.html" title="struct iovec::IoVec">IoVec</a>]) -&gt; <a class="primitive" href="https://doc.rust-lang.org/1.88.0/std/primitive.usize.html">usize</a> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.has_remaining" class="fn">has_remaining</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/1.88.0/std/primitive.bool.html">bool</a> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.copy_to_slice" class="fn">copy_to_slice</a>(&amp;mut self, dst: &amp;mut [<a class="primitive" href="https://doc.rust-lang.org/1.88.0/std/primitive.u8.html">u8</a>]) { ... }
+<span class="item-spacer"></span>    fn <a href="#method.get_u8" class="fn">get_u8</a>(&amp;mut self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/1.88.0/std/primitive.u8.html">u8</a> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.get_i8" class="fn">get_i8</a>(&amp;mut self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/1.88.0/std/primitive.i8.html">i8</a> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.get_u16_be" class="fn">get_u16_be</a>(&amp;mut self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/1.88.0/std/primitive.u16.html">u16</a> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.get_u16_le" class="fn">get_u16_le</a>(&amp;mut self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/1.88.0/std/primitive.u16.html">u16</a> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.get_i16_be" class="fn">get_i16_be</a>(&amp;mut self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/1.88.0/std/primitive.i16.html">i16</a> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.get_i16_le" class="fn">get_i16_le</a>(&amp;mut self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/1.88.0/std/primitive.i16.html">i16</a> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.get_u32_be" class="fn">get_u32_be</a>(&amp;mut self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/1.88.0/std/primitive.u32.html">u32</a> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.get_u32_le" class="fn">get_u32_le</a>(&amp;mut self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/1.88.0/std/primitive.u32.html">u32</a> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.get_i32_be" class="fn">get_i32_be</a>(&amp;mut self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/1.88.0/std/primitive.i32.html">i32</a> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.get_i32_le" class="fn">get_i32_le</a>(&amp;mut self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/1.88.0/std/primitive.i32.html">i32</a> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.get_u64_be" class="fn">get_u64_be</a>(&amp;mut self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/1.88.0/std/primitive.u64.html">u64</a> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.get_u64_le" class="fn">get_u64_le</a>(&amp;mut self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/1.88.0/std/primitive.u64.html">u64</a> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.get_i64_be" class="fn">get_i64_be</a>(&amp;mut self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/1.88.0/std/primitive.i64.html">i64</a> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.get_i64_le" class="fn">get_i64_le</a>(&amp;mut self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/1.88.0/std/primitive.i64.html">i64</a> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.get_uint_be" class="fn">get_uint_be</a>(&amp;mut self, nbytes: <a class="primitive" href="https://doc.rust-lang.org/1.88.0/std/primitive.usize.html">usize</a>) -&gt; <a class="primitive" href="https://doc.rust-lang.org/1.88.0/std/primitive.u64.html">u64</a> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.get_uint_le" class="fn">get_uint_le</a>(&amp;mut self, nbytes: <a class="primitive" href="https://doc.rust-lang.org/1.88.0/std/primitive.usize.html">usize</a>) -&gt; <a class="primitive" href="https://doc.rust-lang.org/1.88.0/std/primitive.u64.html">u64</a> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.get_int_be" class="fn">get_int_be</a>(&amp;mut self, nbytes: <a class="primitive" href="https://doc.rust-lang.org/1.88.0/std/primitive.usize.html">usize</a>) -&gt; <a class="primitive" href="https://doc.rust-lang.org/1.88.0/std/primitive.i64.html">i64</a> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.get_int_le" class="fn">get_int_le</a>(&amp;mut self, nbytes: <a class="primitive" href="https://doc.rust-lang.org/1.88.0/std/primitive.usize.html">usize</a>) -&gt; <a class="primitive" href="https://doc.rust-lang.org/1.88.0/std/primitive.i64.html">i64</a> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.get_f32_be" class="fn">get_f32_be</a>(&amp;mut self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/1.88.0/std/primitive.f32.html">f32</a> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.get_f32_le" class="fn">get_f32_le</a>(&amp;mut self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/1.88.0/std/primitive.f32.html">f32</a> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.get_f64_be" class="fn">get_f64_be</a>(&amp;mut self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/1.88.0/std/primitive.f64.html">f64</a> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.get_f64_le" class="fn">get_f64_le</a>(&amp;mut self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/1.88.0/std/primitive.f64.html">f64</a> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.collect" class="fn">collect</a>&lt;B&gt;(self) -&gt; B
+       <span class="where">where Self: <a class="trait" href="https://doc.rust-lang.org/1.88.0/core/marker/trait.Sized.html" title="trait core::marker::Sized">Sized</a>,
+             B: <a class="trait" href="trait.FromBuf.html" title="trait bytes::buf::FromBuf">FromBuf</a></span> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.take" class="fn">take</a>(self, limit: <a class="primitive" href="https://doc.rust-lang.org/1.88.0/std/primitive.usize.html">usize</a>) -&gt; <a class="struct" href="struct.Take.html" title="struct bytes::buf::Take">Take</a>&lt;Self&gt;
+       <span class="where">where Self: <a class="trait" href="https://doc.rust-lang.org/1.88.0/core/marker/trait.Sized.html" title="trait core::marker::Sized">Sized</a></span> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.chain" class="fn">chain</a>&lt;U&gt;(self, next: U) -&gt; <a class="struct" href="struct.Chain.html" title="struct bytes::buf::Chain">Chain</a>&lt;Self, U::<a class="associatedtype" href="trait.IntoBuf.html#associatedtype.Buf" title="type bytes::buf::IntoBuf::Buf">Buf</a>&gt;
+       <span class="where">where U: <a class="trait" href="trait.IntoBuf.html" title="trait bytes::buf::IntoBuf">IntoBuf</a>,
+             Self: <a class="trait" href="https://doc.rust-lang.org/1.88.0/core/marker/trait.Sized.html" title="trait core::marker::Sized">Sized</a></span> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.by_ref" class="fn">by_ref</a>(&amp;mut self) -&gt; &amp;mut Self
+       <span class="where">where Self: <a class="trait" href="https://doc.rust-lang.org/1.88.0/core/marker/trait.Sized.html" title="trait core::marker::Sized">Sized</a></span> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.reader" class="fn">reader</a>(self) -&gt; <a class="struct" href="struct.Reader.html" title="struct bytes::buf::Reader">Reader</a>&lt;Self&gt; <a href="#" class="tooltip" data-notable-ty="Reader&lt;Self&gt;">ⓘ</a>
+       <span class="where">where Self: <a class="trait" href="https://doc.rust-lang.org/1.88.0/core/marker/trait.Sized.html" title="trait core::marker::Sized">Sized</a></span> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.iter" class="fn">iter</a>(self) -&gt; <a class="struct" href="struct.Iter.html" title="struct bytes::buf::Iter">Iter</a>&lt;Self&gt; <a href="#" class="tooltip" data-notable-ty="Iter&lt;Self&gt;">ⓘ</a>
+       <span class="where">where Self: <a class="trait" href="https://doc.rust-lang.org/1.88.0/core/marker/trait.Sized.html" title="trait core::marker::Sized">Sized</a></span> { ... }
+</details>}</code></pre><details class="toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><p>Read bytes from a buffer.</p>
+<p>A buffer stores bytes in memory such that read operations are infallible.
+The underlying storage may or may not be in contiguous memory. A <code>Buf</code> value
+is a cursor into the buffer. Reading from <code>Buf</code> advances the cursor
+position. It can be thought of as an efficient <code>Iterator</code> for collections of
+bytes.</p>
+<p>The simplest <code>Buf</code> is a <code>Cursor</code> wrapping a <code>[u8]</code>.</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>bytes::Buf;
+<span class="kw">use </span>std::io::Cursor;
+
+<span class="kw">let </span><span class="kw-2">mut </span>buf = Cursor::new(<span class="string">b"hello world"</span>);
+
+<span class="macro">assert_eq!</span>(<span class="string">b'h'</span>, buf.get_u8());
+<span class="macro">assert_eq!</span>(<span class="string">b'e'</span>, buf.get_u8());
+<span class="macro">assert_eq!</span>(<span class="string">b'l'</span>, buf.get_u8());
+
+<span class="kw">let </span><span class="kw-2">mut </span>rest = [<span class="number">0</span>; <span class="number">8</span>];
+buf.copy_to_slice(<span class="kw-2">&amp;mut </span>rest);
+
+<span class="macro">assert_eq!</span>(<span class="kw-2">&amp;</span>rest[..], <span class="string">b"lo world"</span>);</code></pre></div>
+</div></details><h2 id="required-methods" class="section-header">Required Methods<a href="#required-methods" class="anchor">§</a></h2><div class="methods"><details class="toggle method-toggle" open><summary><section id="tymethod.remaining" class="method"><a class="src rightside" href="../../src/bytes/buf/buf.rs.html#91">Source</a><h4 class="code-header">fn <a href="#tymethod.remaining" class="fn">remaining</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/1.88.0/std/primitive.usize.html">usize</a></h4></section></summary><div class="docblock"><p>Returns the number of bytes between the current position and the end of
+the buffer.</p>
+<p>This value is greater than or equal to the length of the slice returned
+by <code>bytes</code>.</p>
+<h5 id="examples"><a class="doc-anchor" href="#examples">§</a>Examples</h5>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>bytes::Buf;
+<span class="kw">use </span>std::io::Cursor;
+
+<span class="kw">let </span><span class="kw-2">mut </span>buf = Cursor::new(<span class="string">b"hello world"</span>);
+
+<span class="macro">assert_eq!</span>(buf.remaining(), <span class="number">11</span>);
+
+buf.get_u8();
+
+<span class="macro">assert_eq!</span>(buf.remaining(), <span class="number">10</span>);</code></pre></div>
+<h5 id="implementer-notes"><a class="doc-anchor" href="#implementer-notes">§</a>Implementer notes</h5>
+<p>Implementations of <code>remaining</code> should ensure that the return value does
+not change unless a call is made to <code>advance</code> or any other function that
+is documented to change the <code>Buf</code>’s current position.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="tymethod.bytes" class="method"><a class="src rightside" href="../../src/bytes/buf/buf.rs.html#120">Source</a><h4 class="code-header">fn <a href="#tymethod.bytes" class="fn">bytes</a>(&amp;self) -&gt; &amp;[<a class="primitive" href="https://doc.rust-lang.org/1.88.0/std/primitive.u8.html">u8</a>] <a href="#" class="tooltip" data-notable-ty="&amp;[u8]">ⓘ</a></h4></section></summary><div class="docblock"><p>Returns a slice starting at the current position and of length between 0
+and <code>Buf::remaining()</code>. Note that this <em>can</em> return shorter slice (this allows
+non-continuous internal representation).</p>
+<p>This is a lower level function. Most operations are done with other
+functions.</p>
+<h5 id="examples-1"><a class="doc-anchor" href="#examples-1">§</a>Examples</h5>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>bytes::Buf;
+<span class="kw">use </span>std::io::Cursor;
+
+<span class="kw">let </span><span class="kw-2">mut </span>buf = Cursor::new(<span class="string">b"hello world"</span>);
+
+<span class="macro">assert_eq!</span>(buf.bytes(), <span class="string">b"hello world"</span>);
+
+buf.advance(<span class="number">6</span>);
+
+<span class="macro">assert_eq!</span>(buf.bytes(), <span class="string">b"world"</span>);</code></pre></div>
+<h5 id="implementer-notes-1"><a class="doc-anchor" href="#implementer-notes-1">§</a>Implementer notes</h5>
+<p>This function should never panic. Once the end of the buffer is reached,
+i.e., <code>Buf::remaining</code> returns 0, calls to <code>bytes</code> should return an
+empty slice.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="tymethod.advance" class="method"><a class="src rightside" href="../../src/bytes/buf/buf.rs.html#193">Source</a><h4 class="code-header">fn <a href="#tymethod.advance" class="fn">advance</a>(&amp;mut self, cnt: <a class="primitive" href="https://doc.rust-lang.org/1.88.0/std/primitive.usize.html">usize</a>)</h4></section></summary><div class="docblock"><p>Advance the internal cursor of the Buf</p>
+<p>The next call to <code>bytes</code> will return a slice starting <code>cnt</code> bytes
+further into the underlying buffer.</p>
+<h5 id="examples-2"><a class="doc-anchor" href="#examples-2">§</a>Examples</h5>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>bytes::Buf;
+<span class="kw">use </span>std::io::Cursor;
+
+<span class="kw">let </span><span class="kw-2">mut </span>buf = Cursor::new(<span class="string">b"hello world"</span>);
+
+<span class="macro">assert_eq!</span>(buf.bytes(), <span class="string">b"hello world"</span>);
+
+buf.advance(<span class="number">6</span>);
+
+<span class="macro">assert_eq!</span>(buf.bytes(), <span class="string">b"world"</span>);</code></pre></div>
+<h5 id="panics"><a class="doc-anchor" href="#panics">§</a>Panics</h5>
+<p>This function <strong>may</strong> panic if <code>cnt &gt; self.remaining()</code>.</p>
+<h5 id="implementer-notes-2"><a class="doc-anchor" href="#implementer-notes-2">§</a>Implementer notes</h5>
+<p>It is recommended for implementations of <code>advance</code> to panic if <code>cnt &gt; self.remaining()</code>. If the implementation does not panic, the call must
+behave as if <code>cnt == self.remaining()</code>.</p>
+<p>A call with <code>cnt == 0</code> should never panic and be a no-op.</p>
+</div></details></div><h2 id="provided-methods" class="section-header">Provided Methods<a href="#provided-methods" class="anchor">§</a></h2><div class="methods"><details class="toggle method-toggle" open><summary><section id="method.bytes_vec" class="method"><a class="src rightside" href="../../src/bytes/buf/buf.rs.html#149-160">Source</a><h4 class="code-header">fn <a href="#method.bytes_vec" class="fn">bytes_vec</a>&lt;'a&gt;(&amp;'a self, dst: &amp;mut [&amp;'a <a class="struct" href="../../iovec/struct.IoVec.html" title="struct iovec::IoVec">IoVec</a>]) -&gt; <a class="primitive" href="https://doc.rust-lang.org/1.88.0/std/primitive.usize.html">usize</a></h4></section></summary><div class="docblock"><p>Fills <code>dst</code> with potentially multiple slices starting at <code>self</code>’s
+current position.</p>
+<p>If the <code>Buf</code> is backed by disjoint slices of bytes, <code>bytes_vec</code> enables
+fetching more than one slice at once. <code>dst</code> is a slice of <code>IoVec</code>
+references, enabling the slice to be directly used with <a href="http://man7.org/linux/man-pages/man2/readv.2.html"><code>writev</code></a>
+without any further conversion. The sum of the lengths of all the
+buffers in <code>dst</code> will be less than or equal to <code>Buf::remaining()</code>.</p>
+<p>The entries in <code>dst</code> will be overwritten, but the data <strong>contained</strong> by
+the slices <strong>will not</strong> be modified. If <code>bytes_vec</code> does not fill every
+entry in <code>dst</code>, then <code>dst</code> is guaranteed to contain all remaining slices
+in `self.</p>
+<p>This is a lower level function. Most operations are done with other
+functions.</p>
+<h5 id="implementer-notes-3"><a class="doc-anchor" href="#implementer-notes-3">§</a>Implementer notes</h5>
+<p>This function should never panic. Once the end of the buffer is reached,
+i.e., <code>Buf::remaining</code> returns 0, calls to <code>bytes_vec</code> must return 0
+without mutating <code>dst</code>.</p>
+<p>Implementations should also take care to properly handle being called
+with <code>dst</code> being a zero length slice.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.has_remaining" class="method"><a class="src rightside" href="../../src/bytes/buf/buf.rs.html#213-215">Source</a><h4 class="code-header">fn <a href="#method.has_remaining" class="fn">has_remaining</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/1.88.0/std/primitive.bool.html">bool</a></h4></section></summary><div class="docblock"><p>Returns true if there are any more bytes to consume</p>
+<p>This is equivalent to <code>self.remaining() != 0</code>.</p>
+<h5 id="examples-3"><a class="doc-anchor" href="#examples-3">§</a>Examples</h5>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>bytes::Buf;
+<span class="kw">use </span>std::io::Cursor;
+
+<span class="kw">let </span><span class="kw-2">mut </span>buf = Cursor::new(<span class="string">b"a"</span>);
+
+<span class="macro">assert!</span>(buf.has_remaining());
+
+buf.get_u8();
+
+<span class="macro">assert!</span>(!buf.has_remaining());</code></pre></div>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.copy_to_slice" class="method"><a class="src rightside" href="../../src/bytes/buf/buf.rs.html#239-259">Source</a><h4 class="code-header">fn <a href="#method.copy_to_slice" class="fn">copy_to_slice</a>(&amp;mut self, dst: &amp;mut [<a class="primitive" href="https://doc.rust-lang.org/1.88.0/std/primitive.u8.html">u8</a>])</h4></section></summary><div class="docblock"><p>Copies bytes from <code>self</code> into <code>dst</code>.</p>
+<p>The cursor is advanced by the number of bytes copied. <code>self</code> must have
+enough remaining bytes to fill <code>dst</code>.</p>
+<h5 id="examples-4"><a class="doc-anchor" href="#examples-4">§</a>Examples</h5>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>bytes::Buf;
+<span class="kw">use </span>std::io::Cursor;
+
+<span class="kw">let </span><span class="kw-2">mut </span>buf = Cursor::new(<span class="string">b"hello world"</span>);
+<span class="kw">let </span><span class="kw-2">mut </span>dst = [<span class="number">0</span>; <span class="number">5</span>];
+
+buf.copy_to_slice(<span class="kw-2">&amp;mut </span>dst);
+<span class="macro">assert_eq!</span>(<span class="string">b"hello"</span>, <span class="kw-2">&amp;</span>dst);
+<span class="macro">assert_eq!</span>(<span class="number">6</span>, buf.remaining());</code></pre></div>
+<h5 id="panics-1"><a class="doc-anchor" href="#panics-1">§</a>Panics</h5>
+<p>This function panics if <code>self.remaining() &lt; dst.len()</code></p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.get_u8" class="method"><a class="src rightside" href="../../src/bytes/buf/buf.rs.html#278-283">Source</a><h4 class="code-header">fn <a href="#method.get_u8" class="fn">get_u8</a>(&amp;mut self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/1.88.0/std/primitive.u8.html">u8</a></h4></section></summary><div class="docblock"><p>Gets an unsigned 8 bit integer from <code>self</code>.</p>
+<p>The current position is advanced by 1.</p>
+<h5 id="examples-5"><a class="doc-anchor" href="#examples-5">§</a>Examples</h5>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>bytes::Buf;
+<span class="kw">use </span>std::io::Cursor;
+
+<span class="kw">let </span><span class="kw-2">mut </span>buf = Cursor::new(<span class="string">b"\x08 hello"</span>);
+<span class="macro">assert_eq!</span>(<span class="number">8</span>, buf.get_u8());</code></pre></div>
+<h5 id="panics-2"><a class="doc-anchor" href="#panics-2">§</a>Panics</h5>
+<p>This function panics if there is no more remaining data in <code>self</code>.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.get_i8" class="method"><a class="src rightside" href="../../src/bytes/buf/buf.rs.html#302-307">Source</a><h4 class="code-header">fn <a href="#method.get_i8" class="fn">get_i8</a>(&amp;mut self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/1.88.0/std/primitive.i8.html">i8</a></h4></section></summary><div class="docblock"><p>Gets a signed 8 bit integer from <code>self</code>.</p>
+<p>The current position is advanced by 1.</p>
+<h5 id="examples-6"><a class="doc-anchor" href="#examples-6">§</a>Examples</h5>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>bytes::Buf;
+<span class="kw">use </span>std::io::Cursor;
+
+<span class="kw">let </span><span class="kw-2">mut </span>buf = Cursor::new(<span class="string">b"\x08 hello"</span>);
+<span class="macro">assert_eq!</span>(<span class="number">8</span>, buf.get_i8());</code></pre></div>
+<h5 id="panics-3"><a class="doc-anchor" href="#panics-3">§</a>Panics</h5>
+<p>This function panics if there is no more remaining data in <code>self</code>.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.get_u16_be" class="method"><a class="src rightside" href="../../src/bytes/buf/buf.rs.html#334-336">Source</a><h4 class="code-header">fn <a href="#method.get_u16_be" class="fn">get_u16_be</a>(&amp;mut self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/1.88.0/std/primitive.u16.html">u16</a></h4></section></summary><div class="docblock"><p>Gets an unsigned 16 bit integer from <code>self</code> in big-endian byte order.</p>
+<p>The current position is advanced by 2.</p>
+<h5 id="examples-7"><a class="doc-anchor" href="#examples-7">§</a>Examples</h5>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>bytes::Buf;
+<span class="kw">use </span>std::io::Cursor;
+
+<span class="kw">let </span><span class="kw-2">mut </span>buf = Cursor::new(<span class="string">b"\x08\x09 hello"</span>);
+<span class="macro">assert_eq!</span>(<span class="number">0x0809</span>, buf.get_u16_be());</code></pre></div>
+<h5 id="panics-4"><a class="doc-anchor" href="#panics-4">§</a>Panics</h5>
+<p>This function panics if there is not enough remaining data in <code>self</code>.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.get_u16_le" class="method"><a class="src rightside" href="../../src/bytes/buf/buf.rs.html#355-357">Source</a><h4 class="code-header">fn <a href="#method.get_u16_le" class="fn">get_u16_le</a>(&amp;mut self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/1.88.0/std/primitive.u16.html">u16</a></h4></section></summary><div class="docblock"><p>Gets an unsigned 16 bit integer from <code>self</code> in little-endian byte order.</p>
+<p>The current position is advanced by 2.</p>
+<h5 id="examples-8"><a class="doc-anchor" href="#examples-8">§</a>Examples</h5>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>bytes::Buf;
+<span class="kw">use </span>std::io::Cursor;
+
+<span class="kw">let </span><span class="kw-2">mut </span>buf = Cursor::new(<span class="string">b"\x09\x08 hello"</span>);
+<span class="macro">assert_eq!</span>(<span class="number">0x0809</span>, buf.get_u16_le());</code></pre></div>
+<h5 id="panics-5"><a class="doc-anchor" href="#panics-5">§</a>Panics</h5>
+<p>This function panics if there is not enough remaining data in <code>self</code>.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.get_i16_be" class="method"><a class="src rightside" href="../../src/bytes/buf/buf.rs.html#384-386">Source</a><h4 class="code-header">fn <a href="#method.get_i16_be" class="fn">get_i16_be</a>(&amp;mut self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/1.88.0/std/primitive.i16.html">i16</a></h4></section></summary><div class="docblock"><p>Gets a signed 16 bit integer from <code>self</code> in big-endian byte order.</p>
+<p>The current position is advanced by 2.</p>
+<h5 id="examples-9"><a class="doc-anchor" href="#examples-9">§</a>Examples</h5>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>bytes::Buf;
+<span class="kw">use </span>std::io::Cursor;
+
+<span class="kw">let </span><span class="kw-2">mut </span>buf = Cursor::new(<span class="string">b"\x08\x09 hello"</span>);
+<span class="macro">assert_eq!</span>(<span class="number">0x0809</span>, buf.get_i16_be());</code></pre></div>
+<h5 id="panics-6"><a class="doc-anchor" href="#panics-6">§</a>Panics</h5>
+<p>This function panics if there is not enough remaining data in <code>self</code>.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.get_i16_le" class="method"><a class="src rightside" href="../../src/bytes/buf/buf.rs.html#405-407">Source</a><h4 class="code-header">fn <a href="#method.get_i16_le" class="fn">get_i16_le</a>(&amp;mut self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/1.88.0/std/primitive.i16.html">i16</a></h4></section></summary><div class="docblock"><p>Gets a signed 16 bit integer from <code>self</code> in little-endian byte order.</p>
+<p>The current position is advanced by 2.</p>
+<h5 id="examples-10"><a class="doc-anchor" href="#examples-10">§</a>Examples</h5>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>bytes::Buf;
+<span class="kw">use </span>std::io::Cursor;
+
+<span class="kw">let </span><span class="kw-2">mut </span>buf = Cursor::new(<span class="string">b"\x09\x08 hello"</span>);
+<span class="macro">assert_eq!</span>(<span class="number">0x0809</span>, buf.get_i16_le());</code></pre></div>
+<h5 id="panics-7"><a class="doc-anchor" href="#panics-7">§</a>Panics</h5>
+<p>This function panics if there is not enough remaining data in <code>self</code>.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.get_u32_be" class="method"><a class="src rightside" href="../../src/bytes/buf/buf.rs.html#434-436">Source</a><h4 class="code-header">fn <a href="#method.get_u32_be" class="fn">get_u32_be</a>(&amp;mut self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/1.88.0/std/primitive.u32.html">u32</a></h4></section></summary><div class="docblock"><p>Gets an unsigned 32 bit integer from <code>self</code> in the big-endian byte order.</p>
+<p>The current position is advanced by 4.</p>
+<h5 id="examples-11"><a class="doc-anchor" href="#examples-11">§</a>Examples</h5>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>bytes::Buf;
+<span class="kw">use </span>std::io::Cursor;
+
+<span class="kw">let </span><span class="kw-2">mut </span>buf = Cursor::new(<span class="string">b"\x08\x09\xA0\xA1 hello"</span>);
+<span class="macro">assert_eq!</span>(<span class="number">0x0809A0A1</span>, buf.get_u32_be());</code></pre></div>
+<h5 id="panics-8"><a class="doc-anchor" href="#panics-8">§</a>Panics</h5>
+<p>This function panics if there is not enough remaining data in <code>self</code>.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.get_u32_le" class="method"><a class="src rightside" href="../../src/bytes/buf/buf.rs.html#455-457">Source</a><h4 class="code-header">fn <a href="#method.get_u32_le" class="fn">get_u32_le</a>(&amp;mut self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/1.88.0/std/primitive.u32.html">u32</a></h4></section></summary><div class="docblock"><p>Gets an unsigned 32 bit integer from <code>self</code> in the little-endian byte order.</p>
+<p>The current position is advanced by 4.</p>
+<h5 id="examples-12"><a class="doc-anchor" href="#examples-12">§</a>Examples</h5>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>bytes::Buf;
+<span class="kw">use </span>std::io::Cursor;
+
+<span class="kw">let </span><span class="kw-2">mut </span>buf = Cursor::new(<span class="string">b"\xA1\xA0\x09\x08 hello"</span>);
+<span class="macro">assert_eq!</span>(<span class="number">0x0809A0A1</span>, buf.get_u32_le());</code></pre></div>
+<h5 id="panics-9"><a class="doc-anchor" href="#panics-9">§</a>Panics</h5>
+<p>This function panics if there is not enough remaining data in <code>self</code>.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.get_i32_be" class="method"><a class="src rightside" href="../../src/bytes/buf/buf.rs.html#484-486">Source</a><h4 class="code-header">fn <a href="#method.get_i32_be" class="fn">get_i32_be</a>(&amp;mut self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/1.88.0/std/primitive.i32.html">i32</a></h4></section></summary><div class="docblock"><p>Gets a signed 32 bit integer from <code>self</code> in big-endian byte order.</p>
+<p>The current position is advanced by 4.</p>
+<h5 id="examples-13"><a class="doc-anchor" href="#examples-13">§</a>Examples</h5>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>bytes::Buf;
+<span class="kw">use </span>std::io::Cursor;
+
+<span class="kw">let </span><span class="kw-2">mut </span>buf = Cursor::new(<span class="string">b"\x08\x09\xA0\xA1 hello"</span>);
+<span class="macro">assert_eq!</span>(<span class="number">0x0809A0A1</span>, buf.get_i32_be());</code></pre></div>
+<h5 id="panics-10"><a class="doc-anchor" href="#panics-10">§</a>Panics</h5>
+<p>This function panics if there is not enough remaining data in <code>self</code>.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.get_i32_le" class="method"><a class="src rightside" href="../../src/bytes/buf/buf.rs.html#505-507">Source</a><h4 class="code-header">fn <a href="#method.get_i32_le" class="fn">get_i32_le</a>(&amp;mut self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/1.88.0/std/primitive.i32.html">i32</a></h4></section></summary><div class="docblock"><p>Gets a signed 32 bit integer from <code>self</code> in little-endian byte order.</p>
+<p>The current position is advanced by 4.</p>
+<h5 id="examples-14"><a class="doc-anchor" href="#examples-14">§</a>Examples</h5>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>bytes::Buf;
+<span class="kw">use </span>std::io::Cursor;
+
+<span class="kw">let </span><span class="kw-2">mut </span>buf = Cursor::new(<span class="string">b"\xA1\xA0\x09\x08 hello"</span>);
+<span class="macro">assert_eq!</span>(<span class="number">0x0809A0A1</span>, buf.get_i32_le());</code></pre></div>
+<h5 id="panics-11"><a class="doc-anchor" href="#panics-11">§</a>Panics</h5>
+<p>This function panics if there is not enough remaining data in <code>self</code>.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.get_u64_be" class="method"><a class="src rightside" href="../../src/bytes/buf/buf.rs.html#534-536">Source</a><h4 class="code-header">fn <a href="#method.get_u64_be" class="fn">get_u64_be</a>(&amp;mut self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/1.88.0/std/primitive.u64.html">u64</a></h4></section></summary><div class="docblock"><p>Gets an unsigned 64 bit integer from <code>self</code> in big-endian byte order.</p>
+<p>The current position is advanced by 8.</p>
+<h5 id="examples-15"><a class="doc-anchor" href="#examples-15">§</a>Examples</h5>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>bytes::Buf;
+<span class="kw">use </span>std::io::Cursor;
+
+<span class="kw">let </span><span class="kw-2">mut </span>buf = Cursor::new(<span class="string">b"\x01\x02\x03\x04\x05\x06\x07\x08 hello"</span>);
+<span class="macro">assert_eq!</span>(<span class="number">0x0102030405060708</span>, buf.get_u64_be());</code></pre></div>
+<h5 id="panics-12"><a class="doc-anchor" href="#panics-12">§</a>Panics</h5>
+<p>This function panics if there is not enough remaining data in <code>self</code>.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.get_u64_le" class="method"><a class="src rightside" href="../../src/bytes/buf/buf.rs.html#555-557">Source</a><h4 class="code-header">fn <a href="#method.get_u64_le" class="fn">get_u64_le</a>(&amp;mut self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/1.88.0/std/primitive.u64.html">u64</a></h4></section></summary><div class="docblock"><p>Gets an unsigned 64 bit integer from <code>self</code> in little-endian byte order.</p>
+<p>The current position is advanced by 8.</p>
+<h5 id="examples-16"><a class="doc-anchor" href="#examples-16">§</a>Examples</h5>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>bytes::Buf;
+<span class="kw">use </span>std::io::Cursor;
+
+<span class="kw">let </span><span class="kw-2">mut </span>buf = Cursor::new(<span class="string">b"\x08\x07\x06\x05\x04\x03\x02\x01 hello"</span>);
+<span class="macro">assert_eq!</span>(<span class="number">0x0102030405060708</span>, buf.get_u64_le());</code></pre></div>
+<h5 id="panics-13"><a class="doc-anchor" href="#panics-13">§</a>Panics</h5>
+<p>This function panics if there is not enough remaining data in <code>self</code>.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.get_i64_be" class="method"><a class="src rightside" href="../../src/bytes/buf/buf.rs.html#584-586">Source</a><h4 class="code-header">fn <a href="#method.get_i64_be" class="fn">get_i64_be</a>(&amp;mut self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/1.88.0/std/primitive.i64.html">i64</a></h4></section></summary><div class="docblock"><p>Gets a signed 64 bit integer from <code>self</code> in big-endian byte order.</p>
+<p>The current position is advanced by 8.</p>
+<h5 id="examples-17"><a class="doc-anchor" href="#examples-17">§</a>Examples</h5>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>bytes::Buf;
+<span class="kw">use </span>std::io::Cursor;
+
+<span class="kw">let </span><span class="kw-2">mut </span>buf = Cursor::new(<span class="string">b"\x01\x02\x03\x04\x05\x06\x07\x08 hello"</span>);
+<span class="macro">assert_eq!</span>(<span class="number">0x0102030405060708</span>, buf.get_i64_be());</code></pre></div>
+<h5 id="panics-14"><a class="doc-anchor" href="#panics-14">§</a>Panics</h5>
+<p>This function panics if there is not enough remaining data in <code>self</code>.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.get_i64_le" class="method"><a class="src rightside" href="../../src/bytes/buf/buf.rs.html#605-607">Source</a><h4 class="code-header">fn <a href="#method.get_i64_le" class="fn">get_i64_le</a>(&amp;mut self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/1.88.0/std/primitive.i64.html">i64</a></h4></section></summary><div class="docblock"><p>Gets a signed 64 bit integer from <code>self</code> in little-endian byte order.</p>
+<p>The current position is advanced by 8.</p>
+<h5 id="examples-18"><a class="doc-anchor" href="#examples-18">§</a>Examples</h5>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>bytes::Buf;
+<span class="kw">use </span>std::io::Cursor;
+
+<span class="kw">let </span><span class="kw-2">mut </span>buf = Cursor::new(<span class="string">b"\x08\x07\x06\x05\x04\x03\x02\x01 hello"</span>);
+<span class="macro">assert_eq!</span>(<span class="number">0x0102030405060708</span>, buf.get_i64_le());</code></pre></div>
+<h5 id="panics-15"><a class="doc-anchor" href="#panics-15">§</a>Panics</h5>
+<p>This function panics if there is not enough remaining data in <code>self</code>.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.get_uint_be" class="method"><a class="src rightside" href="../../src/bytes/buf/buf.rs.html#726-728">Source</a><h4 class="code-header">fn <a href="#method.get_uint_be" class="fn">get_uint_be</a>(&amp;mut self, nbytes: <a class="primitive" href="https://doc.rust-lang.org/1.88.0/std/primitive.usize.html">usize</a>) -&gt; <a class="primitive" href="https://doc.rust-lang.org/1.88.0/std/primitive.u64.html">u64</a></h4></section></summary><div class="docblock"><p>Gets an unsigned n-byte integer from <code>self</code> in big-endian byte order.</p>
+<p>The current position is advanced by <code>nbytes</code>.</p>
+<h5 id="examples-19"><a class="doc-anchor" href="#examples-19">§</a>Examples</h5>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>bytes::{Buf, BigEndian};
+<span class="kw">use </span>std::io::Cursor;
+
+<span class="kw">let </span><span class="kw-2">mut </span>buf = Cursor::new(<span class="string">b"\x01\x02\x03 hello"</span>);
+<span class="macro">assert_eq!</span>(<span class="number">0x010203</span>, buf.get_uint_be(<span class="number">3</span>));</code></pre></div>
+<h5 id="panics-16"><a class="doc-anchor" href="#panics-16">§</a>Panics</h5>
+<p>This function panics if there is not enough remaining data in <code>self</code>.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.get_uint_le" class="method"><a class="src rightside" href="../../src/bytes/buf/buf.rs.html#747-749">Source</a><h4 class="code-header">fn <a href="#method.get_uint_le" class="fn">get_uint_le</a>(&amp;mut self, nbytes: <a class="primitive" href="https://doc.rust-lang.org/1.88.0/std/primitive.usize.html">usize</a>) -&gt; <a class="primitive" href="https://doc.rust-lang.org/1.88.0/std/primitive.u64.html">u64</a></h4></section></summary><div class="docblock"><p>Gets an unsigned n-byte integer from <code>self</code> in little-endian byte order.</p>
+<p>The current position is advanced by <code>nbytes</code>.</p>
+<h5 id="examples-20"><a class="doc-anchor" href="#examples-20">§</a>Examples</h5>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>bytes::Buf;
+<span class="kw">use </span>std::io::Cursor;
+
+<span class="kw">let </span><span class="kw-2">mut </span>buf = Cursor::new(<span class="string">b"\x03\x02\x01 hello"</span>);
+<span class="macro">assert_eq!</span>(<span class="number">0x010203</span>, buf.get_uint_le(<span class="number">3</span>));</code></pre></div>
+<h5 id="panics-17"><a class="doc-anchor" href="#panics-17">§</a>Panics</h5>
+<p>This function panics if there is not enough remaining data in <code>self</code>.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.get_int_be" class="method"><a class="src rightside" href="../../src/bytes/buf/buf.rs.html#776-778">Source</a><h4 class="code-header">fn <a href="#method.get_int_be" class="fn">get_int_be</a>(&amp;mut self, nbytes: <a class="primitive" href="https://doc.rust-lang.org/1.88.0/std/primitive.usize.html">usize</a>) -&gt; <a class="primitive" href="https://doc.rust-lang.org/1.88.0/std/primitive.i64.html">i64</a></h4></section></summary><div class="docblock"><p>Gets a signed n-byte integer from <code>self</code> in big-endian byte order.</p>
+<p>The current position is advanced by <code>nbytes</code>.</p>
+<h5 id="examples-21"><a class="doc-anchor" href="#examples-21">§</a>Examples</h5>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>bytes::Buf;
+<span class="kw">use </span>std::io::Cursor;
+
+<span class="kw">let </span><span class="kw-2">mut </span>buf = Cursor::new(<span class="string">b"\x01\x02\x03 hello"</span>);
+<span class="macro">assert_eq!</span>(<span class="number">0x010203</span>, buf.get_int_be(<span class="number">3</span>));</code></pre></div>
+<h5 id="panics-18"><a class="doc-anchor" href="#panics-18">§</a>Panics</h5>
+<p>This function panics if there is not enough remaining data in <code>self</code>.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.get_int_le" class="method"><a class="src rightside" href="../../src/bytes/buf/buf.rs.html#797-799">Source</a><h4 class="code-header">fn <a href="#method.get_int_le" class="fn">get_int_le</a>(&amp;mut self, nbytes: <a class="primitive" href="https://doc.rust-lang.org/1.88.0/std/primitive.usize.html">usize</a>) -&gt; <a class="primitive" href="https://doc.rust-lang.org/1.88.0/std/primitive.i64.html">i64</a></h4></section></summary><div class="docblock"><p>Gets a signed n-byte integer from <code>self</code> in little-endian byte order.</p>
+<p>The current position is advanced by <code>nbytes</code>.</p>
+<h5 id="examples-22"><a class="doc-anchor" href="#examples-22">§</a>Examples</h5>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>bytes::Buf;
+<span class="kw">use </span>std::io::Cursor;
+
+<span class="kw">let </span><span class="kw-2">mut </span>buf = Cursor::new(<span class="string">b"\x03\x02\x01 hello"</span>);
+<span class="macro">assert_eq!</span>(<span class="number">0x010203</span>, buf.get_int_le(<span class="number">3</span>));</code></pre></div>
+<h5 id="panics-19"><a class="doc-anchor" href="#panics-19">§</a>Panics</h5>
+<p>This function panics if there is not enough remaining data in <code>self</code>.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.get_f32_be" class="method"><a class="src rightside" href="../../src/bytes/buf/buf.rs.html#827-829">Source</a><h4 class="code-header">fn <a href="#method.get_f32_be" class="fn">get_f32_be</a>(&amp;mut self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/1.88.0/std/primitive.f32.html">f32</a></h4></section></summary><div class="docblock"><p>Gets an IEEE754 single-precision (4 bytes) floating point number from
+<code>self</code> in big-endian byte order.</p>
+<p>The current position is advanced by 4.</p>
+<h5 id="examples-23"><a class="doc-anchor" href="#examples-23">§</a>Examples</h5>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>bytes::Buf;
+<span class="kw">use </span>std::io::Cursor;
+
+<span class="kw">let </span><span class="kw-2">mut </span>buf = Cursor::new(<span class="string">b"\x3F\x99\x99\x9A hello"</span>);
+<span class="macro">assert_eq!</span>(<span class="number">1.2f32</span>, buf.get_f32_be());</code></pre></div>
+<h5 id="panics-20"><a class="doc-anchor" href="#panics-20">§</a>Panics</h5>
+<p>This function panics if there is not enough remaining data in <code>self</code>.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.get_f32_le" class="method"><a class="src rightside" href="../../src/bytes/buf/buf.rs.html#849-851">Source</a><h4 class="code-header">fn <a href="#method.get_f32_le" class="fn">get_f32_le</a>(&amp;mut self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/1.88.0/std/primitive.f32.html">f32</a></h4></section></summary><div class="docblock"><p>Gets an IEEE754 single-precision (4 bytes) floating point number from
+<code>self</code> in little-endian byte order.</p>
+<p>The current position is advanced by 4.</p>
+<h5 id="examples-24"><a class="doc-anchor" href="#examples-24">§</a>Examples</h5>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>bytes::Buf;
+<span class="kw">use </span>std::io::Cursor;
+
+<span class="kw">let </span><span class="kw-2">mut </span>buf = Cursor::new(<span class="string">b"\x9A\x99\x99\x3F hello"</span>);
+<span class="macro">assert_eq!</span>(<span class="number">1.2f32</span>, buf.get_f32_le());</code></pre></div>
+<h5 id="panics-21"><a class="doc-anchor" href="#panics-21">§</a>Panics</h5>
+<p>This function panics if there is not enough remaining data in <code>self</code>.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.get_f64_be" class="method"><a class="src rightside" href="../../src/bytes/buf/buf.rs.html#879-881">Source</a><h4 class="code-header">fn <a href="#method.get_f64_be" class="fn">get_f64_be</a>(&amp;mut self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/1.88.0/std/primitive.f64.html">f64</a></h4></section></summary><div class="docblock"><p>Gets an IEEE754 double-precision (8 bytes) floating point number from
+<code>self</code> in big-endian byte order.</p>
+<p>The current position is advanced by 8.</p>
+<h5 id="examples-25"><a class="doc-anchor" href="#examples-25">§</a>Examples</h5>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>bytes::Buf;
+<span class="kw">use </span>std::io::Cursor;
+
+<span class="kw">let </span><span class="kw-2">mut </span>buf = Cursor::new(<span class="string">b"\x3F\xF3\x33\x33\x33\x33\x33\x33 hello"</span>);
+<span class="macro">assert_eq!</span>(<span class="number">1.2f64</span>, buf.get_f64_be());</code></pre></div>
+<h5 id="panics-22"><a class="doc-anchor" href="#panics-22">§</a>Panics</h5>
+<p>This function panics if there is not enough remaining data in <code>self</code>.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.get_f64_le" class="method"><a class="src rightside" href="../../src/bytes/buf/buf.rs.html#901-903">Source</a><h4 class="code-header">fn <a href="#method.get_f64_le" class="fn">get_f64_le</a>(&amp;mut self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/1.88.0/std/primitive.f64.html">f64</a></h4></section></summary><div class="docblock"><p>Gets an IEEE754 double-precision (8 bytes) floating point number from
+<code>self</code> in little-endian byte order.</p>
+<p>The current position is advanced by 8.</p>
+<h5 id="examples-26"><a class="doc-anchor" href="#examples-26">§</a>Examples</h5>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>bytes::Buf;
+<span class="kw">use </span>std::io::Cursor;
+
+<span class="kw">let </span><span class="kw-2">mut </span>buf = Cursor::new(<span class="string">b"\x33\x33\x33\x33\x33\x33\xF3\x3F hello"</span>);
+<span class="macro">assert_eq!</span>(<span class="number">1.2f64</span>, buf.get_f64_le());</code></pre></div>
+<h5 id="panics-23"><a class="doc-anchor" href="#panics-23">§</a>Panics</h5>
+<p>This function panics if there is not enough remaining data in <code>self</code>.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.collect" class="method"><a class="src rightside" href="../../src/bytes/buf/buf.rs.html#922-927">Source</a><h4 class="code-header">fn <a href="#method.collect" class="fn">collect</a>&lt;B&gt;(self) -&gt; B<div class="where">where
+    Self: <a class="trait" href="https://doc.rust-lang.org/1.88.0/core/marker/trait.Sized.html" title="trait core::marker::Sized">Sized</a>,
+    B: <a class="trait" href="trait.FromBuf.html" title="trait bytes::buf::FromBuf">FromBuf</a>,</div></h4></section></summary><div class="docblock"><p>Transforms a <code>Buf</code> into a concrete buffer.</p>
+<p><code>collect()</code> can operate on any value that implements <code>Buf</code>, and turn it
+into the relevent concrete buffer type.</p>
+<h5 id="examples-27"><a class="doc-anchor" href="#examples-27">§</a>Examples</h5>
+<p>Collecting a buffer and loading the contents into a <code>Vec&lt;u8&gt;</code>.</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>bytes::{Buf, Bytes, IntoBuf};
+
+<span class="kw">let </span>buf = Bytes::from(<span class="kw-2">&amp;</span><span class="string">b"hello world"</span>[..]).into_buf();
+<span class="kw">let </span>vec: Vec&lt;u8&gt; = buf.collect();
+
+<span class="macro">assert_eq!</span>(vec, <span class="kw-2">&amp;</span><span class="string">b"hello world"</span>[..]);</code></pre></div>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.take" class="method"><a class="src rightside" href="../../src/bytes/buf/buf.rs.html#951-955">Source</a><h4 class="code-header">fn <a href="#method.take" class="fn">take</a>(self, limit: <a class="primitive" href="https://doc.rust-lang.org/1.88.0/std/primitive.usize.html">usize</a>) -&gt; <a class="struct" href="struct.Take.html" title="struct bytes::buf::Take">Take</a>&lt;Self&gt;<div class="where">where
+    Self: <a class="trait" href="https://doc.rust-lang.org/1.88.0/core/marker/trait.Sized.html" title="trait core::marker::Sized">Sized</a>,</div></h4></section></summary><div class="docblock"><p>Creates an adaptor which will read at most <code>limit</code> bytes from <code>self</code>.</p>
+<p>This function returns a new instance of <code>Buf</code> which will read at most
+<code>limit</code> bytes.</p>
+<h5 id="examples-28"><a class="doc-anchor" href="#examples-28">§</a>Examples</h5>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>bytes::{Buf, BufMut};
+<span class="kw">use </span>std::io::Cursor;
+
+<span class="kw">let </span><span class="kw-2">mut </span>buf = Cursor::new(<span class="string">"hello world"</span>).take(<span class="number">5</span>);
+<span class="kw">let </span><span class="kw-2">mut </span>dst = <span class="macro">vec!</span>[];
+
+dst.put(<span class="kw-2">&amp;mut </span>buf);
+<span class="macro">assert_eq!</span>(dst, <span class="string">b"hello"</span>);
+
+<span class="kw">let </span><span class="kw-2">mut </span>buf = buf.into_inner();
+dst.clear();
+dst.put(<span class="kw-2">&amp;mut </span>buf);
+<span class="macro">assert_eq!</span>(dst, <span class="string">b" world"</span>);</code></pre></div>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.chain" class="method"><a class="src rightside" href="../../src/bytes/buf/buf.rs.html#974-979">Source</a><h4 class="code-header">fn <a href="#method.chain" class="fn">chain</a>&lt;U&gt;(self, next: U) -&gt; <a class="struct" href="struct.Chain.html" title="struct bytes::buf::Chain">Chain</a>&lt;Self, U::<a class="associatedtype" href="trait.IntoBuf.html#associatedtype.Buf" title="type bytes::buf::IntoBuf::Buf">Buf</a>&gt;<div class="where">where
+    U: <a class="trait" href="trait.IntoBuf.html" title="trait bytes::buf::IntoBuf">IntoBuf</a>,
+    Self: <a class="trait" href="https://doc.rust-lang.org/1.88.0/core/marker/trait.Sized.html" title="trait core::marker::Sized">Sized</a>,</div></h4></section></summary><div class="docblock"><p>Creates an adaptor which will chain this buffer with another.</p>
+<p>The returned <code>Buf</code> instance will first consume all bytes from <code>self</code>.
+Afterwards the output is equivalent to the output of next.</p>
+<h5 id="examples-29"><a class="doc-anchor" href="#examples-29">§</a>Examples</h5>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>bytes::{Bytes, Buf, IntoBuf};
+<span class="kw">use </span>bytes::buf::Chain;
+
+<span class="kw">let </span>buf = Bytes::from(<span class="kw-2">&amp;</span><span class="string">b"hello "</span>[..]).into_buf()
+            .chain(Bytes::from(<span class="kw-2">&amp;</span><span class="string">b"world"</span>[..]));
+
+<span class="kw">let </span>full: Bytes = buf.collect();
+<span class="macro">assert_eq!</span>(full[..], <span class="string">b"hello world"</span>[..]);</code></pre></div>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.by_ref" class="method"><a class="src rightside" href="../../src/bytes/buf/buf.rs.html#1004-1006">Source</a><h4 class="code-header">fn <a href="#method.by_ref" class="fn">by_ref</a>(&amp;mut self) -&gt; &amp;mut Self<div class="where">where
+    Self: <a class="trait" href="https://doc.rust-lang.org/1.88.0/core/marker/trait.Sized.html" title="trait core::marker::Sized">Sized</a>,</div></h4></section></summary><div class="docblock"><p>Creates a “by reference” adaptor for this instance of <code>Buf</code>.</p>
+<p>The returned adaptor also implements <code>Buf</code> and will simply borrow <code>self</code>.</p>
+<h5 id="examples-30"><a class="doc-anchor" href="#examples-30">§</a>Examples</h5>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>bytes::{Buf, BufMut};
+<span class="kw">use </span>std::io::Cursor;
+
+<span class="kw">let </span><span class="kw-2">mut </span>buf = Cursor::new(<span class="string">"hello world"</span>);
+<span class="kw">let </span><span class="kw-2">mut </span>dst = <span class="macro">vec!</span>[];
+
+{
+    <span class="kw">let </span><span class="kw-2">mut </span>reference = buf.by_ref();
+    dst.put(<span class="kw-2">&amp;mut </span>reference.take(<span class="number">5</span>));
+    <span class="macro">assert_eq!</span>(dst, <span class="string">b"hello"</span>);
+} <span class="comment">// drop our &amp;mut reference so we can use `buf` again
+
+</span>dst.clear();
+dst.put(<span class="kw-2">&amp;mut </span>buf);
+<span class="macro">assert_eq!</span>(dst, <span class="string">b" world"</span>);</code></pre></div>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.reader" class="method"><a class="src rightside" href="../../src/bytes/buf/buf.rs.html#1031-1033">Source</a><h4 class="code-header">fn <a href="#method.reader" class="fn">reader</a>(self) -&gt; <a class="struct" href="struct.Reader.html" title="struct bytes::buf::Reader">Reader</a>&lt;Self&gt; <a href="#" class="tooltip" data-notable-ty="Reader&lt;Self&gt;">ⓘ</a><div class="where">where
+    Self: <a class="trait" href="https://doc.rust-lang.org/1.88.0/core/marker/trait.Sized.html" title="trait core::marker::Sized">Sized</a>,</div></h4></section></summary><div class="docblock"><p>Creates an adaptor which implements the <code>Read</code> trait for <code>self</code>.</p>
+<p>This function returns a new value which implements <code>Read</code> by adapting
+the <code>Read</code> trait functions to the <code>Buf</code> trait functions. Given that
+<code>Buf</code> operations are infallible, none of the <code>Read</code> functions will
+return with <code>Err</code>.</p>
+<h5 id="examples-31"><a class="doc-anchor" href="#examples-31">§</a>Examples</h5>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>bytes::{Buf, IntoBuf, Bytes};
+<span class="kw">use </span>std::io::Read;
+
+<span class="kw">let </span>buf = Bytes::from(<span class="string">"hello world"</span>).into_buf();
+
+<span class="kw">let </span><span class="kw-2">mut </span>reader = buf.reader();
+<span class="kw">let </span><span class="kw-2">mut </span>dst = [<span class="number">0</span>; <span class="number">1024</span>];
+
+<span class="kw">let </span>num = reader.read(<span class="kw-2">&amp;mut </span>dst).unwrap();
+
+<span class="macro">assert_eq!</span>(<span class="number">11</span>, num);
+<span class="macro">assert_eq!</span>(<span class="kw-2">&amp;</span>dst[..<span class="number">11</span>], <span class="string">b"hello world"</span>);</code></pre></div>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.iter" class="method"><a class="src rightside" href="../../src/bytes/buf/buf.rs.html#1050-1052">Source</a><h4 class="code-header">fn <a href="#method.iter" class="fn">iter</a>(self) -&gt; <a class="struct" href="struct.Iter.html" title="struct bytes::buf::Iter">Iter</a>&lt;Self&gt; <a href="#" class="tooltip" data-notable-ty="Iter&lt;Self&gt;">ⓘ</a><div class="where">where
+    Self: <a class="trait" href="https://doc.rust-lang.org/1.88.0/core/marker/trait.Sized.html" title="trait core::marker::Sized">Sized</a>,</div></h4></section></summary><div class="docblock"><p>Returns an iterator over the bytes contained by the buffer.</p>
+<h5 id="examples-32"><a class="doc-anchor" href="#examples-32">§</a>Examples</h5>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>bytes::{Buf, IntoBuf, Bytes};
+
+<span class="kw">let </span>buf = Bytes::from(<span class="kw-2">&amp;</span><span class="string">b"abc"</span>[..]).into_buf();
+<span class="kw">let </span><span class="kw-2">mut </span>iter = buf.iter();
+
+<span class="macro">assert_eq!</span>(iter.next(), <span class="prelude-val">Some</span>(<span class="string">b'a'</span>));
+<span class="macro">assert_eq!</span>(iter.next(), <span class="prelude-val">Some</span>(<span class="string">b'b'</span>));
+<span class="macro">assert_eq!</span>(iter.next(), <span class="prelude-val">Some</span>(<span class="string">b'c'</span>));
+<span class="macro">assert_eq!</span>(iter.next(), <span class="prelude-val">None</span>);</code></pre></div>
+</div></details></div><h2 id="foreign-impls" class="section-header">Implementations on Foreign Types<a href="#foreign-impls" class="anchor">§</a></h2><details class="toggle implementors-toggle"><summary><section id="impl-Buf-for-Option%3C%5Bu8;+1%5D%3E" class="impl"><a class="src rightside" href="../../src/bytes/buf/buf.rs.html#1124-1150">Source</a><a href="#impl-Buf-for-Option%3C%5Bu8;+1%5D%3E" class="anchor">§</a><h3 class="code-header">impl <a class="trait" href="trait.Buf.html" title="trait bytes::buf::Buf">Buf</a> for <a class="enum" href="https://doc.rust-lang.org/1.88.0/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;[<a class="primitive" href="https://doc.rust-lang.org/1.88.0/std/primitive.u8.html">u8</a>; <a class="primitive" href="https://doc.rust-lang.org/1.88.0/std/primitive.array.html">1</a>]&gt;</h3></section></summary><div class="impl-items"><section id="method.remaining" class="method trait-impl"><a class="src rightside" href="../../src/bytes/buf/buf.rs.html#1125-1131">Source</a><a href="#method.remaining" class="anchor">§</a><h4 class="code-header">fn <a href="#tymethod.remaining" class="fn">remaining</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/1.88.0/std/primitive.usize.html">usize</a></h4></section><section id="method.bytes" class="method trait-impl"><a class="src rightside" href="../../src/bytes/buf/buf.rs.html#1133-1136">Source</a><a href="#method.bytes" class="anchor">§</a><h4 class="code-header">fn <a href="#tymethod.bytes" class="fn">bytes</a>(&amp;self) -&gt; &amp;[<a class="primitive" href="https://doc.rust-lang.org/1.88.0/std/primitive.u8.html">u8</a>] <a href="#" class="tooltip" data-notable-ty="&amp;[u8]">ⓘ</a></h4></section><section id="method.advance" class="method trait-impl"><a class="src rightside" href="../../src/bytes/buf/buf.rs.html#1138-1149">Source</a><a href="#method.advance" class="anchor">§</a><h4 class="code-header">fn <a href="#tymethod.advance" class="fn">advance</a>(&amp;mut self, cnt: <a class="primitive" href="https://doc.rust-lang.org/1.88.0/std/primitive.usize.html">usize</a>)</h4></section></div></details><details class="toggle implementors-toggle"><summary><section id="impl-Buf-for-VecDeque%3Cu8%3E" class="impl"><a class="src rightside" href="../../src/bytes/buf/vec_deque.rs.html#5-22">Source</a><a href="#impl-Buf-for-VecDeque%3Cu8%3E" class="anchor">§</a><h3 class="code-header">impl <a class="trait" href="trait.Buf.html" title="trait bytes::buf::Buf">Buf</a> for <a class="struct" href="https://doc.rust-lang.org/1.88.0/alloc/collections/vec_deque/struct.VecDeque.html" title="struct alloc::collections::vec_deque::VecDeque">VecDeque</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/1.88.0/std/primitive.u8.html">u8</a>&gt;</h3></section></summary><div class="impl-items"><section id="method.remaining-1" class="method trait-impl"><a class="src rightside" href="../../src/bytes/buf/vec_deque.rs.html#6-8">Source</a><a href="#method.remaining-1" class="anchor">§</a><h4 class="code-header">fn <a href="#tymethod.remaining" class="fn">remaining</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/1.88.0/std/primitive.usize.html">usize</a></h4></section><section id="method.bytes-1" class="method trait-impl"><a class="src rightside" href="../../src/bytes/buf/vec_deque.rs.html#10-17">Source</a><a href="#method.bytes-1" class="anchor">§</a><h4 class="code-header">fn <a href="#tymethod.bytes" class="fn">bytes</a>(&amp;self) -&gt; &amp;[<a class="primitive" href="https://doc.rust-lang.org/1.88.0/std/primitive.u8.html">u8</a>] <a href="#" class="tooltip" data-notable-ty="&amp;[u8]">ⓘ</a></h4></section><section id="method.advance-1" class="method trait-impl"><a class="src rightside" href="../../src/bytes/buf/vec_deque.rs.html#19-21">Source</a><a href="#method.advance-1" class="anchor">§</a><h4 class="code-header">fn <a href="#tymethod.advance" class="fn">advance</a>(&amp;mut self, cnt: <a class="primitive" href="https://doc.rust-lang.org/1.88.0/std/primitive.usize.html">usize</a>)</h4></section></div></details><details class="toggle implementors-toggle"><summary><section id="impl-Buf-for-%26mut+T" class="impl"><a class="src rightside" href="../../src/bytes/buf/buf.rs.html#1055-1071">Source</a><a href="#impl-Buf-for-%26mut+T" class="anchor">§</a><h3 class="code-header">impl&lt;'a, T: <a class="trait" href="trait.Buf.html" title="trait bytes::buf::Buf">Buf</a> + ?<a class="trait" href="https://doc.rust-lang.org/1.88.0/core/marker/trait.Sized.html" title="trait core::marker::Sized">Sized</a>&gt; <a class="trait" href="trait.Buf.html" title="trait bytes::buf::Buf">Buf</a> for <a class="primitive" href="https://doc.rust-lang.org/1.88.0/std/primitive.reference.html">&amp;'a mut T</a></h3></section></summary><div class="impl-items"><section id="method.remaining-2" class="method trait-impl"><a class="src rightside" href="../../src/bytes/buf/buf.rs.html#1056-1058">Source</a><a href="#method.remaining-2" class="anchor">§</a><h4 class="code-header">fn <a href="#tymethod.remaining" class="fn">remaining</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/1.88.0/std/primitive.usize.html">usize</a></h4></section><section id="method.bytes-2" class="method trait-impl"><a class="src rightside" href="../../src/bytes/buf/buf.rs.html#1060-1062">Source</a><a href="#method.bytes-2" class="anchor">§</a><h4 class="code-header">fn <a href="#tymethod.bytes" class="fn">bytes</a>(&amp;self) -&gt; &amp;[<a class="primitive" href="https://doc.rust-lang.org/1.88.0/std/primitive.u8.html">u8</a>] <a href="#" class="tooltip" data-notable-ty="&amp;[u8]">ⓘ</a></h4></section><section id="method.bytes_vec-1" class="method trait-impl"><a class="src rightside" href="../../src/bytes/buf/buf.rs.html#1064-1066">Source</a><a href="#method.bytes_vec-1" class="anchor">§</a><h4 class="code-header">fn <a href="#method.bytes_vec" class="fn">bytes_vec</a>&lt;'b&gt;(&amp;'b self, dst: &amp;mut [&amp;'b <a class="struct" href="../../iovec/struct.IoVec.html" title="struct iovec::IoVec">IoVec</a>]) -&gt; <a class="primitive" href="https://doc.rust-lang.org/1.88.0/std/primitive.usize.html">usize</a></h4></section><section id="method.advance-2" class="method trait-impl"><a class="src rightside" href="../../src/bytes/buf/buf.rs.html#1068-1070">Source</a><a href="#method.advance-2" class="anchor">§</a><h4 class="code-header">fn <a href="#tymethod.advance" class="fn">advance</a>(&amp;mut self, cnt: <a class="primitive" href="https://doc.rust-lang.org/1.88.0/std/primitive.usize.html">usize</a>)</h4></section></div></details><details class="toggle implementors-toggle"><summary><section id="impl-Buf-for-Cursor%3CT%3E" class="impl"><a class="src rightside" href="../../src/bytes/buf/buf.rs.html#1091-1122">Source</a><a href="#impl-Buf-for-Cursor%3CT%3E" class="anchor">§</a><h3 class="code-header">impl&lt;T: <a class="trait" href="https://doc.rust-lang.org/1.88.0/core/convert/trait.AsRef.html" title="trait core::convert::AsRef">AsRef</a>&lt;[<a class="primitive" href="https://doc.rust-lang.org/1.88.0/std/primitive.u8.html">u8</a>]&gt;&gt; <a class="trait" href="trait.Buf.html" title="trait bytes::buf::Buf">Buf</a> for <a class="struct" href="https://doc.rust-lang.org/1.88.0/std/io/cursor/struct.Cursor.html" title="struct std::io::cursor::Cursor">Cursor</a>&lt;T&gt;</h3></section></summary><div class="impl-items"><section id="method.remaining-3" class="method trait-impl"><a class="src rightside" href="../../src/bytes/buf/buf.rs.html#1092-1101">Source</a><a href="#method.remaining-3" class="anchor">§</a><h4 class="code-header">fn <a href="#tymethod.remaining" class="fn">remaining</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/1.88.0/std/primitive.usize.html">usize</a></h4></section><section id="method.bytes-3" class="method trait-impl"><a class="src rightside" href="../../src/bytes/buf/buf.rs.html#1103-1112">Source</a><a href="#method.bytes-3" class="anchor">§</a><h4 class="code-header">fn <a href="#tymethod.bytes" class="fn">bytes</a>(&amp;self) -&gt; &amp;[<a class="primitive" href="https://doc.rust-lang.org/1.88.0/std/primitive.u8.html">u8</a>] <a href="#" class="tooltip" data-notable-ty="&amp;[u8]">ⓘ</a></h4></section><section id="method.advance-3" class="method trait-impl"><a class="src rightside" href="../../src/bytes/buf/buf.rs.html#1114-1121">Source</a><a href="#method.advance-3" class="anchor">§</a><h4 class="code-header">fn <a href="#tymethod.advance" class="fn">advance</a>(&amp;mut self, cnt: <a class="primitive" href="https://doc.rust-lang.org/1.88.0/std/primitive.usize.html">usize</a>)</h4></section></div></details><details class="toggle implementors-toggle"><summary><section id="impl-Buf-for-Box%3CT%3E" class="impl"><a class="src rightside" href="../../src/bytes/buf/buf.rs.html#1073-1089">Source</a><a href="#impl-Buf-for-Box%3CT%3E" class="anchor">§</a><h3 class="code-header">impl&lt;T: <a class="trait" href="trait.Buf.html" title="trait bytes::buf::Buf">Buf</a> + ?<a class="trait" href="https://doc.rust-lang.org/1.88.0/core/marker/trait.Sized.html" title="trait core::marker::Sized">Sized</a>&gt; <a class="trait" href="trait.Buf.html" title="trait bytes::buf::Buf">Buf</a> for <a class="struct" href="https://doc.rust-lang.org/1.88.0/alloc/boxed/struct.Box.html" title="struct alloc::boxed::Box">Box</a>&lt;T&gt;</h3></section></summary><div class="impl-items"><section id="method.remaining-4" class="method trait-impl"><a class="src rightside" href="../../src/bytes/buf/buf.rs.html#1074-1076">Source</a><a href="#method.remaining-4" class="anchor">§</a><h4 class="code-header">fn <a href="#tymethod.remaining" class="fn">remaining</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/1.88.0/std/primitive.usize.html">usize</a></h4></section><section id="method.bytes-4" class="method trait-impl"><a class="src rightside" href="../../src/bytes/buf/buf.rs.html#1078-1080">Source</a><a href="#method.bytes-4" class="anchor">§</a><h4 class="code-header">fn <a href="#tymethod.bytes" class="fn">bytes</a>(&amp;self) -&gt; &amp;[<a class="primitive" href="https://doc.rust-lang.org/1.88.0/std/primitive.u8.html">u8</a>] <a href="#" class="tooltip" data-notable-ty="&amp;[u8]">ⓘ</a></h4></section><section id="method.bytes_vec-2" class="method trait-impl"><a class="src rightside" href="../../src/bytes/buf/buf.rs.html#1082-1084">Source</a><a href="#method.bytes_vec-2" class="anchor">§</a><h4 class="code-header">fn <a href="#method.bytes_vec" class="fn">bytes_vec</a>&lt;'b&gt;(&amp;'b self, dst: &amp;mut [&amp;'b <a class="struct" href="../../iovec/struct.IoVec.html" title="struct iovec::IoVec">IoVec</a>]) -&gt; <a class="primitive" href="https://doc.rust-lang.org/1.88.0/std/primitive.usize.html">usize</a></h4></section><section id="method.advance-4" class="method trait-impl"><a class="src rightside" href="../../src/bytes/buf/buf.rs.html#1086-1088">Source</a><a href="#method.advance-4" class="anchor">§</a><h4 class="code-header">fn <a href="#tymethod.advance" class="fn">advance</a>(&amp;mut self, cnt: <a class="primitive" href="https://doc.rust-lang.org/1.88.0/std/primitive.usize.html">usize</a>)</h4></section></div></details><h2 id="implementors" class="section-header">Implementors<a href="#implementors" class="anchor">§</a></h2><div id="implementors-list"><section id="impl-Buf-for-Chain%3CT,+U%3E" class="impl"><a class="src rightside" href="../../src/bytes/buf/chain.rs.html#146-185">Source</a><a href="#impl-Buf-for-Chain%3CT,+U%3E" class="anchor">§</a><h3 class="code-header">impl&lt;T, U&gt; <a class="trait" href="trait.Buf.html" title="trait bytes::buf::Buf">Buf</a> for <a class="struct" href="struct.Chain.html" title="struct bytes::buf::Chain">Chain</a>&lt;T, U&gt;<div class="where">where
+    T: <a class="trait" href="trait.Buf.html" title="trait bytes::buf::Buf">Buf</a>,
+    U: <a class="trait" href="trait.Buf.html" title="trait bytes::buf::Buf">Buf</a>,</div></h3></section><section id="impl-Buf-for-Take%3CT%3E" class="impl"><a class="src rightside" href="../../src/bytes/buf/take.rs.html#140-155">Source</a><a href="#impl-Buf-for-Take%3CT%3E" class="anchor">§</a><h3 class="code-header">impl&lt;T: <a class="trait" href="trait.Buf.html" title="trait bytes::buf::Buf">Buf</a>&gt; <a class="trait" href="trait.Buf.html" title="trait bytes::buf::Buf">Buf</a> for <a class="struct" href="struct.Take.html" title="struct bytes::buf::Take">Take</a>&lt;T&gt;</h3></section></div><script src="../../trait.impl/bytes/buf/buf/trait.Buf.js" data-ignore-extern-crates="alloc,std,core" async></script><script type="text/json" id="notable-traits-data">{"&[u8]":"<h3>Notable traits for <code>&amp;[<a class=\"primitive\" href=\"https://doc.rust-lang.org/1.88.0/std/primitive.u8.html\">u8</a>]</code></h3><pre><code><div class=\"where\">impl <a class=\"trait\" href=\"https://doc.rust-lang.org/1.88.0/std/io/trait.Read.html\" title=\"trait std::io::Read\">Read</a> for &amp;[<a class=\"primitive\" href=\"https://doc.rust-lang.org/1.88.0/std/primitive.u8.html\">u8</a>]</div>","Iter<Self>":"<h3>Notable traits for <code><a class=\"struct\" href=\"struct.Iter.html\" title=\"struct bytes::buf::Iter\">Iter</a>&lt;T&gt;</code></h3><pre><code><div class=\"where\">impl&lt;T: <a class=\"trait\" href=\"trait.Buf.html\" title=\"trait bytes::buf::Buf\">Buf</a>&gt; <a class=\"trait\" href=\"https://doc.rust-lang.org/1.88.0/core/iter/traits/iterator/trait.Iterator.html\" title=\"trait core::iter::traits::iterator::Iterator\">Iterator</a> for <a class=\"struct\" href=\"struct.Iter.html\" title=\"struct bytes::buf::Iter\">Iter</a>&lt;T&gt;</div><div class=\"where\">    type <a href=\"https://doc.rust-lang.org/1.88.0/core/iter/traits/iterator/trait.Iterator.html#associatedtype.Item\" class=\"associatedtype\">Item</a> = <a class=\"primitive\" href=\"https://doc.rust-lang.org/1.88.0/std/primitive.u8.html\">u8</a>;</div>","Reader<Self>":"<h3>Notable traits for <code><a class=\"struct\" href=\"struct.Reader.html\" title=\"struct bytes::buf::Reader\">Reader</a>&lt;B&gt;</code></h3><pre><code><div class=\"where\">impl&lt;B: <a class=\"trait\" href=\"trait.Buf.html\" title=\"trait bytes::buf::Buf\">Buf</a> + <a class=\"trait\" href=\"https://doc.rust-lang.org/1.88.0/core/marker/trait.Sized.html\" title=\"trait core::marker::Sized\">Sized</a>&gt; <a class=\"trait\" href=\"https://doc.rust-lang.org/1.88.0/std/io/trait.Read.html\" title=\"trait std::io::Read\">Read</a> for <a class=\"struct\" href=\"struct.Reader.html\" title=\"struct bytes::buf::Reader\">Reader</a>&lt;B&gt;</div>"}</script></section></div></main></body></html>

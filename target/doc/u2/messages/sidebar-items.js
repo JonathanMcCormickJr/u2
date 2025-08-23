@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"struct":["RegisterRequest","RegisterResponse","RegisteredKey","SignResponse","U2fRegisterRequest","U2fSignRequest"]};

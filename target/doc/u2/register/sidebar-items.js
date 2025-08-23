@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["get_registered_key","parse_registration"],"struct":["Registration"]};

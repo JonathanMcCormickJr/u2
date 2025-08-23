@@ -1,0 +1,12 @@
+/home/jonathan/projects/u2f-rs/target/debug/deps/base64-fb65bc6c779521b2.d: /home/jonathan/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/base64-0.11.0/src/lib.rs /home/jonathan/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/base64-0.11.0/src/chunked_encoder.rs /home/jonathan/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/base64-0.11.0/src/display.rs /home/jonathan/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/base64-0.11.0/src/tables.rs /home/jonathan/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/base64-0.11.0/src/write/mod.rs /home/jonathan/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/base64-0.11.0/src/write/encoder.rs /home/jonathan/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/base64-0.11.0/src/encode.rs /home/jonathan/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/base64-0.11.0/src/decode.rs
+
+/home/jonathan/projects/u2f-rs/target/debug/deps/libbase64-fb65bc6c779521b2.rmeta: /home/jonathan/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/base64-0.11.0/src/lib.rs /home/jonathan/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/base64-0.11.0/src/chunked_encoder.rs /home/jonathan/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/base64-0.11.0/src/display.rs /home/jonathan/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/base64-0.11.0/src/tables.rs /home/jonathan/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/base64-0.11.0/src/write/mod.rs /home/jonathan/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/base64-0.11.0/src/write/encoder.rs /home/jonathan/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/base64-0.11.0/src/encode.rs /home/jonathan/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/base64-0.11.0/src/decode.rs
+
+/home/jonathan/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/base64-0.11.0/src/lib.rs:
+/home/jonathan/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/base64-0.11.0/src/chunked_encoder.rs:
+/home/jonathan/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/base64-0.11.0/src/display.rs:
+/home/jonathan/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/base64-0.11.0/src/tables.rs:
+/home/jonathan/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/base64-0.11.0/src/write/mod.rs:
+/home/jonathan/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/base64-0.11.0/src/write/encoder.rs:
+/home/jonathan/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/base64-0.11.0/src/encode.rs:
+/home/jonathan/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/base64-0.11.0/src/decode.rs:
