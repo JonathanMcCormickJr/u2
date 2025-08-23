@@ -1,10 +1,8 @@
 use bytes::{Buf, BufMut};
-use std::io::Cursor;
 use openssl::sha::sha256;
-
+use std::io::Cursor;
 
 use crate::u2ferror::U2fError;
-
 
 /// The `Result` type used in this crate.
 type Result<T> = ::std::result::Result<T, U2fError>;
@@ -16,10 +14,14 @@ pub struct Authorization {
     pub user_presence: bool,
 }
 
-pub fn parse_sign_response(app_id: String, client_data: Vec<u8>, public_key: Vec<u8>, sign_data: Vec<u8>) -> Result<Authorization> {
-
+pub fn parse_sign_response(
+    app_id: String,
+    client_data: Vec<u8>,
+    public_key: Vec<u8>,
+    sign_data: Vec<u8>,
+) -> Result<Authorization> {
     if sign_data.len() <= 5 {
-        return Err(U2fError::InvalidSignatureData)
+        return Err(U2fError::InvalidSignatureData);
     }
 
     let user_presence_flag = &sign_data[0];
@@ -32,8 +34,8 @@ pub fn parse_sign_response(app_id: String, client_data: Vec<u8>, public_key: Vec
 
     let mut msg = vec![];
     msg.put(app_id_hash.as_ref());
-    msg.put(user_presence_flag.clone()); 
-    msg.put(counter);  
+    msg.put(user_presence_flag.clone());
+    msg.put(counter);
     msg.put(client_data_hash.as_ref());
 
     let public_key = super::crypto::NISTP256Key::from_bytes(&public_key)?;
@@ -41,17 +43,16 @@ pub fn parse_sign_response(app_id: String, client_data: Vec<u8>, public_key: Vec
     // The signature is to be verified by the relying party using the public key obtained during registration.
     let verified = public_key.verify_signature(&signature[..], msg.as_ref())?;
     if !verified {
-        return Err(U2fError::BadSignature)
+        return Err(U2fError::BadSignature);
     }
 
     let authorization = Authorization {
         counter: get_counter(counter),
-        user_presence: true
+        user_presence: true,
     };
 
     Ok(authorization)
 }
-
 
 fn get_counter(counter: &[u8]) -> u32 {
     let mut buf = Cursor::new(&counter[..]);

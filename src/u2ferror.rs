@@ -43,26 +43,6 @@ impl fmt::Display for U2fError {
 }
 
 impl error::Error for U2fError {
-    fn description(&self) -> &str {
-        match &self {
-            U2fError::Asm1DecoderError => "Error attempting to decode Asm1 message",
-            U2fError::BadSignature => "Error attempting to verify provided signature",
-            U2fError::RandomSecureBytesError => "Error attempting to generate random bytes",
-            U2fError::InvalidReservedByte => "Error attempting to parse Reserved Byte",
-            U2fError::ChallengeExpired => "Challenge has expired",
-            U2fError::WrongKeyHandler => "Wrong Key Handler",
-            U2fError::InvalidClientData => "Invalid Client Data",
-            U2fError::InvalidSignatureData => "Invalid Signature Data",
-            U2fError::InvalidUserPresenceByte => "Invalid User Presence Byte",
-            U2fError::BadCertificate => "Failed to parse certificate",
-            U2fError::NotTrustedAnchor => "Not Trusted Anchor",
-            U2fError::CounterTooLow => "Counter too low",
-            U2fError::InvalidPublicKey => "Invalid public key",
-            U2fError::OpenSSLNoCurveName => "OpenSSL no curve name",
-            U2fError::OpenSSLError(e) => e.description(),
-        }
-    }
-
     fn cause(&self) -> Option<&dyn error::Error> {
         match *self {
             U2fError::Asm1DecoderError => None,
@@ -73,7 +53,7 @@ impl error::Error for U2fError {
             U2fError::WrongKeyHandler => None,
             U2fError::InvalidClientData => None,
             U2fError::InvalidSignatureData => None,
-            U2fError::InvalidUserPresenceByte => None,  
+            U2fError::InvalidUserPresenceByte => None,
             U2fError::BadCertificate => None,
             U2fError::NotTrustedAnchor => None,
             U2fError::CounterTooLow => None,

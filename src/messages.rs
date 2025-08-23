@@ -12,7 +12,7 @@ pub struct U2fRegisterRequest {
 #[derive(Serialize)]
 pub struct RegisterRequest {
     pub version: String,
-    pub challenge: String
+    pub challenge: String,
 }
 
 #[derive(Serialize)]
@@ -20,7 +20,7 @@ pub struct RegisterRequest {
 pub struct RegisteredKey {
     pub version: String,
     pub key_handle: Option<String>,
-    pub app_id: String
+    pub app_id: String,
 }
 
 #[derive(Deserialize)]
@@ -28,7 +28,7 @@ pub struct RegisteredKey {
 pub struct RegisterResponse {
     pub registration_data: String,
     pub version: String,
-    pub client_data: String
+    pub client_data: String,
 }
 
 #[derive(Serialize)]
@@ -36,7 +36,7 @@ pub struct RegisterResponse {
 pub struct U2fSignRequest {
     pub app_id: String,
     pub challenge: String,
-    pub registered_keys: Vec<RegisteredKey>
+    pub registered_keys: Vec<RegisteredKey>,
 }
 
 #[derive(Clone, Deserialize)]
@@ -44,5 +44,5 @@ pub struct U2fSignRequest {
 pub struct SignResponse {
     pub key_handle: String,
     pub signature_data: String,
-    pub client_data: String
+    pub client_data: String,
 }

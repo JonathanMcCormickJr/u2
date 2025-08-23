@@ -51,11 +51,12 @@ impl TryFrom<&[u8]> for X509PublicKey {
 }
 
 impl X509PublicKey {
-    pub (crate) fn common_name(&self) -> Option<String> {
+    pub(crate) fn common_name(&self) -> Option<String> {
         let cert = &self.pubk;
 
         let subject = cert.subject_name();
-        let common = subject.entries_by_nid(openssl::nid::Nid::COMMONNAME)
+        let common = subject
+            .entries_by_nid(openssl::nid::Nid::COMMONNAME)
             .next()
             .map(|b| b.data().as_slice());
 
@@ -75,15 +76,11 @@ impl X509PublicKey {
 
         let ec_key = pk.ec_key().map_err(|e| U2fError::OpenSSLError(e))?;
 
-        ec_key
-            .check_key()
-            .map_err(|e| U2fError::OpenSSLError(e))?;
+        ec_key.check_key().map_err(|e| U2fError::OpenSSLError(e))?;
 
         let ec_grpref = ec_key.group();
 
-        let ec_curve = ec_grpref
-            .curve_name()
-            .ok_or(U2fError::OpenSSLNoCurveName)?;
+        let ec_curve = ec_grpref.curve_name().ok_or(U2fError::OpenSSLNoCurveName)?;
 
         Ok(ec_curve == nid::Nid::X9_62_PRIME256V1)
     }
@@ -117,62 +114,55 @@ pub struct NISTP256Key {
     pub y: [u8; 32],
 }
 
-
 impl NISTP256Key {
     pub fn from_bytes(public_key_bytes: &[u8]) -> Result<Self, U2fError> {
         if public_key_bytes.len() != 65 {
-            return Err(U2fError::InvalidPublicKey)
+            return Err(U2fError::InvalidPublicKey);
         }
 
         if public_key_bytes[0] != 0x04 {
-            return Err(U2fError::InvalidPublicKey)
+            return Err(U2fError::InvalidPublicKey);
         }
 
-        let mut x:[u8; 32] = Default::default();
+        let mut x: [u8; 32] = Default::default();
         x.copy_from_slice(&public_key_bytes[1..=32]);
 
-        let mut y:[u8; 32] = Default::default();
+        let mut y: [u8; 32] = Default::default();
         y.copy_from_slice(&public_key_bytes[33..=64]);
 
-        Ok(NISTP256Key {
-            x, y
-        })
+        Ok(NISTP256Key { x, y })
     }
 
     fn get_key(&self) -> Result<ec::EcKey<Public>, U2fError> {
         let ec_group = ec::EcGroup::from_curve_name(openssl::nid::Nid::X9_62_PRIME256V1)
             .map_err(|e| U2fError::OpenSSLError(e))?;
 
-        let xbn =
-            bn::BigNum::from_slice(&self.x).map_err(|e| U2fError::OpenSSLError(e))?;
-        let ybn =
-            bn::BigNum::from_slice(&self.y).map_err(|e| U2fError::OpenSSLError(e))?;
+        let xbn = bn::BigNum::from_slice(&self.x).map_err(|e| U2fError::OpenSSLError(e))?;
+        let ybn = bn::BigNum::from_slice(&self.y).map_err(|e| U2fError::OpenSSLError(e))?;
 
         let ec_key = openssl::ec::EcKey::from_public_key_affine_coordinates(&ec_group, &xbn, &ybn)
             .map_err(|e| U2fError::OpenSSLError(e))?;
 
         // Validate the key is sound. IIRC this actually checks the values
         // are correctly on the curve as specified
-        ec_key.check_key()
-            .map_err(|e| U2fError::OpenSSLError(e))?;
+        ec_key.check_key().map_err(|e| U2fError::OpenSSLError(e))?;
 
         Ok(ec_key)
     }
 
-
-    pub fn verify_signature(&self, signature: &[u8], verification_data: &[u8])
-                            -> Result<bool, U2fError>
-    {
+    pub fn verify_signature(
+        &self,
+        signature: &[u8],
+        verification_data: &[u8],
+    ) -> Result<bool, U2fError> {
         let pkey = self.get_key()?;
 
-        let signature = openssl::ecdsa::EcdsaSig::from_der(signature).map_err(|e| U2fError::OpenSSLError(e))?;
+        let signature =
+            openssl::ecdsa::EcdsaSig::from_der(signature).map_err(|e| U2fError::OpenSSLError(e))?;
         let hash = openssl::sha::sha256(&verification_data);
 
-        signature.verify(hash.as_ref(), &pkey).map_err(|e| U2fError::OpenSSLError(e))
+        signature
+            .verify(hash.as_ref(), &pkey)
+            .map_err(|e| U2fError::OpenSSLError(e))
     }
 }
-
-
-
-
-

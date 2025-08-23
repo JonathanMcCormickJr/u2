@@ -1,6 +1,6 @@
 [package]
 name = "u2"
-version = "0.1.2"
+version = "0.1.3"
 edition = "2024"
 authors = ["Flavio Oliveira, et al (2017-2020) as `u2f`", "Jonathan A. McCormick, Jr. (2025-) as `u2`"]
 

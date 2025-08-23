@@ -1,10 +1,10 @@
-use bytes::{Bytes, BufMut};
+use byteorder::{BigEndian, ByteOrder};
+use bytes::{BufMut, Bytes};
 use openssl::sha::sha256;
-use byteorder::{ByteOrder, BigEndian};
 
-use crate::util::*;
 use crate::messages::RegisteredKey;
 use crate::u2ferror::U2fError;
+use crate::util::*;
 use std::convert::TryFrom;
 
 /// The `Result` type used in this crate.
@@ -22,14 +22,18 @@ pub struct Registration {
     pub device_name: Option<String>,
 }
 
-pub fn parse_registration(app_id: String, client_data: Vec<u8>, registration_data: Vec<u8>) -> Result<Registration> {
+pub fn parse_registration(
+    app_id: String,
+    client_data: Vec<u8>,
+    registration_data: Vec<u8>,
+) -> Result<Registration> {
     let reserved_byte = registration_data[0];
     if reserved_byte != 0x05 {
         return Err(U2fError::InvalidReservedByte);
     }
 
     let mut mem = Bytes::from(registration_data);
-    
+
     //Start parsing ... advance the reserved byte.
     let _ = mem.split_to(1);
 
@@ -45,7 +49,7 @@ pub fn parse_registration(app_id: String, client_data: Vec<u8>, registration_dat
     let cert_len = asn_length(mem.clone()).unwrap();
     let attestation_certificate = mem.split_to(cert_len);
 
-    // Remaining data corresponds to the signature 
+    // Remaining data corresponds to the signature
     let signature = mem;
 
     // Let's build the msg to verify the signature
@@ -55,13 +59,13 @@ pub fn parse_registration(app_id: String, client_data: Vec<u8>, registration_dat
     let mut msg = vec![0x00]; // A byte reserved for future use [1 byte] with the value 0x00
     msg.put(app_id_hash.as_ref());
     msg.put(client_data_hash.as_ref());
-    msg.put(key_handle.clone()); 
-    msg.put(public_key.clone()); 
-
+    msg.put(key_handle.clone());
+    msg.put(public_key.clone());
 
     // The signature is to be verified by the relying party using the public key certified
     // in the attestation certificate.
-    let cerificate_public_key = super::crypto::X509PublicKey::try_from(&attestation_certificate[..])?;
+    let cerificate_public_key =
+        super::crypto::X509PublicKey::try_from(&attestation_certificate[..])?;
 
     if !(cerificate_public_key.is_secp256r1()?) {
         return Err(U2fError::BadCertificate);
@@ -75,7 +79,7 @@ pub fn parse_registration(app_id: String, client_data: Vec<u8>, registration_dat
 
     let registration = Registration {
         key_handle: key_handle[..].to_vec(),
-        pub_key: public_key[..].to_vec(), 
+        pub_key: public_key[..].to_vec(),
         attestation_cert: Some(attestation_certificate[..].to_vec()),
         device_name: cerificate_public_key.common_name(),
     };
@@ -87,6 +91,6 @@ pub fn get_registered_key(app_id: String, key_handle: Vec<u8>) -> RegisteredKey 
     RegisteredKey {
         app_id: app_id,
         version: U2F_V2.into(),
-        key_handle: Some(get_encoded(key_handle.as_slice()))
+        key_handle: Some(get_encoded(key_handle.as_slice())),
     }
 }

@@ -1,8 +1,8 @@
-use chrono::{prelude::*, TimeDelta};
-use openssl::rand;
-use bytes::{Bytes};
-use base64::{encode_config, URL_SAFE_NO_PAD};
 use crate::u2ferror::U2fError;
+use base64::{URL_SAFE_NO_PAD, encode_config};
+use bytes::Bytes;
+use chrono::{TimeDelta, prelude::*};
+use openssl::rand;
 
 /// The `Result` type used in this crate.
 type Result<T> = ::std::result::Result<T, U2fError>;
@@ -24,13 +24,13 @@ pub fn expiration(timestamp: String) -> TimeDelta {
     now.signed_duration_since(ts.unwrap())
 }
 
-
 // Decode initial bytes of buffer as ASN and return the length of the encoded structure.
 // http://en.wikipedia.org/wiki/X.690
 pub fn asn_length(mem: Bytes) -> Result<usize> {
-    let buffer : &[u8] = &mem[..];
+    let buffer: &[u8] = &mem[..];
 
-    if mem.len() < 2 || buffer[0] != 0x30 {  // Type 
+    if mem.len() < 2 || buffer[0] != 0x30 {
+        // Type
         return Err(U2fError::Asm1DecoderError);
     }
 
@@ -46,9 +46,9 @@ pub fn asn_length(mem: Bytes) -> Result<usize> {
 
     let mut length: usize = 0;
     for num in 0..numbem_of_bytes {
-        length = length*0x100 + (buffer[(2+num) as usize] as usize);
+        length = length * 0x100 + (buffer[(2 + num) as usize] as usize);
     }
- 
+
     length = length + (numbem_of_bytes as usize);
 
     Ok(length + 2) // Add the 2 initial bytes: type and length.
