@@ -1,4 +1,6 @@
-# `u2`: a Rust U2F Library &emsp; [![MIT licensed]][MIT] [![Apache-2.0 licensed]][APACHE]
+# `u2`: a Rust U2F Library &emsp; 
+
+[![MIT licensed]][MIT] [![Apache-2.0 licensed]][APACHE]
 
 <!--Description 	
 English: [Original description] An air-to-air left side view of a TR-1 tactical reconnaissance aircraft.
@@ -43,4 +45,6 @@ See provided [example](https://github.com/wisespace-io/u2f-rs/tree/master/exampl
 
 ## Contributing
 
-All constructive contributions are welcome!! Please raise an issue or make a pull request on GitHub. --Jonathan
+All constructive contributions are welcome!! Please raise an issue or make a pull request on GitHub. 
+
+Please note that by contributing, you agree that your contribution(s) may be integrated into this project and dual-licensed in the same way which the overall project is. See [LICENSE](./LICENSE) for more information. 
