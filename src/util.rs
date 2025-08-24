@@ -10,25 +10,25 @@ type Result<T> = ::std::result::Result<T, U2fError>;
 pub const U2F_V2: &'static str = "U2F_V2";
 
 /// Generates a challenge from a secure, random source.
-/// 
+///
 /// ```rust
 /// use u2::util;
 /// use assertables::assert_gt;
-/// 
+///
 /// let random_bytes0 = util::generate_challenge_randomness(32).unwrap();
 /// let random_challenge_bytes_as_string0 = format!("{:?}", random_bytes0);
 /// assert_eq!(random_bytes0.len(), 32);
 /// let entropy0 = util::shannon_entropy(&random_bytes0);
 /// assert_gt!(entropy0, 4.5);
-/// assert!(entropy0 <= 8.0); 
-/// 
+/// assert!(entropy0 <= 8.0);
+///
 /// let random_bytes1 = util::generate_challenge_randomness(32).unwrap();
 /// let random_challenge_bytes_as_string1 = format!("{:?}", random_bytes1);
 /// assert_eq!(random_bytes1.len(), 32);
 /// let entropy1 = util::shannon_entropy(&random_bytes1);
 /// assert_gt!(entropy1, 4.5);
-/// assert!(entropy1 <= 8.0); 
-/// 
+/// assert!(entropy1 <= 8.0);
+///
 /// assert_ne!(random_challenge_bytes_as_string0, random_challenge_bytes_as_string1);
 /// ```
 pub fn generate_challenge_randomness(size: usize) -> Result<Vec<u8>> {
@@ -85,24 +85,24 @@ pub fn get_encoded(data: &[u8]) -> String {
 ///
 /// The calculation treats the slice as raw bytes, not as UTF‑8 characters.
 /// Returns 0.0 for an empty slice.
-/// 
+///
 /// ```rust
 /// use u2::util::shannon_entropy;
-/// 
+///
 /// let se0 = shannon_entropy("Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.".as_bytes());
 /// assert_eq!(se0, 4.022379320675357);
-/// 
+///
 /// let se1 = shannon_entropy("11111111111".as_bytes());
 /// assert_eq!(se1, 0.0);
-/// 
+///
 /// let se2 = shannon_entropy("Moderate-complexity text.".as_bytes());
 /// assert_eq!(se2, 3.8438561897747237);
-/// 
+///
 /// let se3 = shannon_entropy("XuU7372pb8rJ5BZuqCM2tucaNVKhDcv4".as_bytes());
 /// assert_eq!(se3, 4.663909765557392);
-/// 
+///
 /// ```
-/// 
+///
 pub fn shannon_entropy(input: &[u8]) -> f64 {
     if input.is_empty() {
         return 0.0;
