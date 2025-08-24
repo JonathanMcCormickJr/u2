@@ -9,7 +9,28 @@ type Result<T> = ::std::result::Result<T, U2fError>;
 
 pub const U2F_V2: &'static str = "U2F_V2";
 
-// Generates a challenge from a secure, random source.
+/// Generates a challenge from a secure, random source.
+/// 
+/// ```rust
+/// use u2::util;
+/// use assertables::assert_gt;
+/// 
+/// let random_bytes0 = util::generate_challenge_randomness(32).unwrap();
+/// let random_challenge_bytes_as_string0 = format!("{:?}", random_bytes0);
+/// assert_eq!(random_bytes0.len(), 32);
+/// let entropy0 = util::shannon_entropy(&random_bytes0);
+/// assert_gt!(entropy0, 4.5);
+/// assert!(entropy0 <= 8.0); 
+/// 
+/// let random_bytes1 = util::generate_challenge_randomness(32).unwrap();
+/// let random_challenge_bytes_as_string1 = format!("{:?}", random_bytes1);
+/// assert_eq!(random_bytes1.len(), 32);
+/// let entropy1 = util::shannon_entropy(&random_bytes1);
+/// assert_gt!(entropy1, 4.5);
+/// assert!(entropy1 <= 8.0); 
+/// 
+/// assert_ne!(random_challenge_bytes_as_string0, random_challenge_bytes_as_string1);
+/// ```
 pub fn generate_challenge_randomness(size: usize) -> Result<Vec<u8>> {
     let mut bytes: Vec<u8> = vec![0; size];
     rand::rand_bytes(&mut bytes).map_err(|_e| U2fError::RandomSecureBytesError)?;
@@ -58,4 +79,52 @@ pub fn get_encoded(data: &[u8]) -> String {
     let encoded: String = encode_config(data, URL_SAFE_NO_PAD);
 
     encoded.trim_end_matches('=').to_string()
+}
+
+/// Computes the Shannon entropy (in bits per byte) of a byte slice.
+///
+/// The calculation treats the slice as raw bytes, not as UTF‑8 characters.
+/// Returns 0.0 for an empty slice.
+/// 
+/// ```rust
+/// use u2::util::shannon_entropy;
+/// 
+/// let se0 = shannon_entropy("Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.".as_bytes());
+/// assert_eq!(se0, 4.022379320675357);
+/// 
+/// let se1 = shannon_entropy("11111111111".as_bytes());
+/// assert_eq!(se1, 0.0);
+/// 
+/// let se2 = shannon_entropy("Moderate-complexity text.".as_bytes());
+/// assert_eq!(se2, 3.8438561897747237);
+/// 
+/// let se3 = shannon_entropy("XuU7372pb8rJ5BZuqCM2tucaNVKhDcv4".as_bytes());
+/// assert_eq!(se3, 4.663909765557392);
+/// 
+/// ```
+/// 
+pub fn shannon_entropy(input: &[u8]) -> f64 {
+    if input.is_empty() {
+        return 0.0;
+    }
+
+    let len = input.len() as f64;
+
+    // Frequency table for all possible byte values (0..=255).
+    let mut freq = [0usize; 256];
+    for &b in input {
+        freq[b as usize] += 1;
+    }
+
+    // ‑∑ p·log₂(p)
+    let mut entropy = 0.0_f64;
+    for &count in &freq {
+        if count == 0 {
+            continue; // skip symbols that never appear
+        }
+        let p = count as f64 / len;
+        entropy -= p * p.log2();
+    }
+
+    entropy
 }

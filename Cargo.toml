@@ -16,6 +16,7 @@ name = "u2"
 path = "src/lib.rs"
 
 [dependencies]
+assertables = "9.8.2"
 time = "0.3"
 bytes = "0.4"
 base64 = "0.11"
