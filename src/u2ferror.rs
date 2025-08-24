@@ -121,24 +121,4 @@ impl fmt::Display for U2fError {
     }
 }
 
-impl error::Error for U2fError {
-    fn cause(&self) -> Option<&dyn error::Error> {
-        match *self {
-            U2fError::Asm1DecoderError => None,
-            U2fError::BadSignature => None,
-            U2fError::RandomSecureBytesError => None,
-            U2fError::InvalidReservedByte => None,
-            U2fError::ChallengeExpired => None,
-            U2fError::WrongKeyHandler => None,
-            U2fError::InvalidClientData => None,
-            U2fError::InvalidSignatureData => None,
-            U2fError::InvalidUserPresenceByte => None,
-            U2fError::BadCertificate => None,
-            U2fError::NotTrustedAnchor => None,
-            U2fError::CounterTooLow => None,
-            U2fError::InvalidPublicKey => None,
-            U2fError::OpenSSLNoCurveName => None,
-            U2fError::OpenSSLError(_) => None,
-        }
-    }
-}
+impl error::Error for U2fError {}
