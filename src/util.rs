@@ -10,7 +10,7 @@ type Result<T> = ::std::result::Result<T, U2fError>;
 pub const U2F_V2: &'static str = "U2F_V2";
 
 // Generates a challenge from a secure, random source.
-pub fn generate_challenge(size: usize) -> Result<Vec<u8>> {
+pub fn generate_challenge_randomness(size: usize) -> Result<Vec<u8>> {
     let mut bytes: Vec<u8> = vec![0; size];
     rand::rand_bytes(&mut bytes).map_err(|_e| U2fError::RandomSecureBytesError)?;
     Ok(bytes)

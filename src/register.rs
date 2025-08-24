@@ -10,7 +10,7 @@ use std::convert::TryFrom;
 /// The `Result` type used in this crate.
 type Result<T> = ::std::result::Result<T, U2fError>;
 
-// Single enrolment or pairing between an application and a token.
+// Single enrollment or pairing between an application and a token.
 #[derive(Serialize, Clone)]
 #[serde(rename_all = "camelCase")]
 pub struct Registration {

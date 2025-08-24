@@ -10,11 +10,6 @@ use chrono::prelude::*;
 
 type Result<T> = ::std::result::Result<T, U2fError>;
 
-#[derive(Clone)]
-pub struct U2f {
-    app_id: String,
-}
-
 #[derive(Deserialize, Serialize, Clone)]
 #[serde(rename_all = "camelCase")]
 pub struct Challenge {
@@ -23,16 +18,10 @@ pub struct Challenge {
     pub timestamp: String,
 }
 
-impl Challenge {
-    pub fn new() -> Self {
-        Challenge {
-            app_id: String::new(),
-            challenge: String::new(),
-            timestamp: String::new(),
-        }
-    }
+#[derive(Clone)]
+pub struct U2f {
+    app_id: String,
 }
-
 impl U2f {
     // The app ID is a string used to uniquely identify an U2F app
     pub fn new(app_id: String) -> Self {
@@ -42,7 +31,7 @@ impl U2f {
     pub fn generate_challenge(&self) -> Result<Challenge> {
         let utc: DateTime<Utc> = Utc::now();
 
-        let challenge_bytes = generate_challenge(32)?;
+        let challenge_bytes = generate_challenge_randomness(32)?;
         let challenge = Challenge {
             challenge: encode_config(&challenge_bytes, URL_SAFE_NO_PAD),
             timestamp: format!("{:?}", utc),
