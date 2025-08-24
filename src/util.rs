@@ -38,16 +38,16 @@ pub fn generate_challenge_randomness(size: usize) -> Result<Vec<u8>> {
 }
 
 /// Time which has elapsed since a specified timestamp.
-/// 
+///
 /// ```rust
 /// use chrono::TimeDelta;
 /// use u2::util;
 /// use assertables::assert_gt;
-/// 
+///
 /// let timestamp0 = String::from("2025-08-24T15:30:00.123456Z");
 /// let elapsed_time0 = util::elapsed_time(timestamp0);
 /// assert_gt!(elapsed_time0, TimeDelta::new(25927, 626454086).unwrap());
-/// 
+///
 /// let timestamp1 = String::from("2012-07-19T22:05:41.374829123Z");
 /// let elapsed_time1 = util::elapsed_time(timestamp1);
 /// assert_gt!(elapsed_time1, TimeDelta::new(413340209, 626454086).unwrap());
@@ -62,19 +62,19 @@ pub fn elapsed_time(timestamp: String) -> TimeDelta {
 
 /// Decode initial bytes of buffer as ASN and return the length of the encoded structure.
 /// http://en.wikipedia.org/wiki/X.690
-/// 
+///
 /// VERIFICATION NEEDED ON THIS ONE!! NOT TO BE USED IN PRODUCTION YET!!
-/// 
+///
 /// ```rust
 /// use u2::util::asn_length;
 /// use bytes::Bytes;
-/// 
+///
 /// let short_bytes = Bytes::from_static(&[0x30, 0x03, 0x01, 0x02, 0x03]);
 /// assert_eq!(asn_length(short_bytes).unwrap(), 3);
-/// 
+///
 /// let long_bytes = Bytes::from_static(&[0x30, 0x82, 0x00, 0x04, 0xAA, 0xBB, 0xCC, 0xDD]);
 /// assert_eq!(asn_length(long_bytes).unwrap(), 8);
-/// 
+///
 /// ```
 pub fn asn_length(mem: Bytes) -> Result<usize> {
     let buffer: &[u8] = &mem[..];
@@ -105,14 +105,14 @@ pub fn asn_length(mem: Bytes) -> Result<usize> {
 }
 
 /// Encode as URL-safe, no padding base64
-/// 
+///
 /// ```rust
 /// use u2::util::get_encoded;
-/// 
+///
 /// let message0 = b"My string!!";
 /// let encoded_string0 = get_encoded(message0);
 /// assert_eq!(encoded_string0, String::from("TXkgc3RyaW5nISE"));
-/// 
+///
 /// let message1 = b"Weaponized assault penguins";
 /// let encoded_string1 = get_encoded(message1);
 /// assert_eq!(encoded_string1, String::from("V2VhcG9uaXplZCBhc3NhdWx0IHBlbmd1aW5z"));
