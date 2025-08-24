@@ -64,14 +64,14 @@ pub fn parse_registration(
 
     // The signature is to be verified by the relying party using the public key certified
     // in the attestation certificate.
-    let cerificate_public_key =
+    let certificate_public_key =
         super::crypto::X509PublicKey::try_from(&attestation_certificate[..])?;
 
-    if !(cerificate_public_key.is_secp256r1()?) {
+    if !(certificate_public_key.is_secp256r1()?) {
         return Err(U2fError::BadCertificate);
     }
 
-    let verified = cerificate_public_key.verify_signature(&signature[..], &msg[..])?;
+    let verified = certificate_public_key.verify_signature(&signature[..], &msg[..])?;
 
     if !verified {
         return Err(U2fError::BadCertificate);
@@ -81,7 +81,7 @@ pub fn parse_registration(
         key_handle: key_handle[..].to_vec(),
         pub_key: public_key[..].to_vec(),
         attestation_cert: Some(attestation_certificate[..].to_vec()),
-        device_name: cerificate_public_key.common_name(),
+        device_name: certificate_public_key.common_name(),
     };
 
     Ok(registration)
