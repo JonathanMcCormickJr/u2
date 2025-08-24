@@ -37,7 +37,22 @@ pub fn generate_challenge_randomness(size: usize) -> Result<Vec<u8>> {
     Ok(bytes)
 }
 
-pub fn expiration(timestamp: String) -> TimeDelta {
+/// Time which has elapsed since a specified timestamp.
+/// 
+/// ```rust
+/// use chrono::TimeDelta;
+/// use u2::util;
+/// use assertables::assert_gt;
+/// 
+/// let timestamp0 = String::from("2025-08-24T15:30:00.123456Z");
+/// let elapsed_time0 = util::elapsed_time(timestamp0);
+/// assert_gt!(elapsed_time0, TimeDelta::new(25927, 626454086).unwrap());
+/// 
+/// let timestamp1 = String::from("2012-07-19T22:05:41.374829123Z");
+/// let elapsed_time1 = util::elapsed_time(timestamp1);
+/// assert_gt!(elapsed_time1, TimeDelta::new(413340209, 626454086).unwrap());
+/// ```
+pub fn elapsed_time(timestamp: String) -> TimeDelta {
     let now: DateTime<Utc> = Utc::now();
 
     let ts = timestamp.parse::<DateTime<Utc>>();
@@ -45,8 +60,22 @@ pub fn expiration(timestamp: String) -> TimeDelta {
     now.signed_duration_since(ts.unwrap())
 }
 
-// Decode initial bytes of buffer as ASN and return the length of the encoded structure.
-// http://en.wikipedia.org/wiki/X.690
+/// Decode initial bytes of buffer as ASN and return the length of the encoded structure.
+/// http://en.wikipedia.org/wiki/X.690
+/// 
+/// VERIFICATION NEEDED ON THIS ONE!! NOT TO BE USED IN PRODUCTION YET!!
+/// 
+/// ```rust
+/// use u2::util::asn_length;
+/// use bytes::Bytes;
+/// 
+/// let short_bytes = Bytes::from_static(&[0x30, 0x03, 0x01, 0x02, 0x03]);
+/// assert_eq!(asn_length(short_bytes).unwrap(), 3);
+/// 
+/// let long_bytes = Bytes::from_static(&[0x30, 0x82, 0x00, 0x04, 0xAA, 0xBB, 0xCC, 0xDD]);
+/// assert_eq!(asn_length(long_bytes).unwrap(), 8);
+/// 
+/// ```
 pub fn asn_length(mem: Bytes) -> Result<usize> {
     let buffer: &[u8] = &mem[..];
 
@@ -60,21 +89,34 @@ pub fn asn_length(mem: Bytes) -> Result<usize> {
         return Ok((len & 0x7f) as usize);
     }
 
-    let numbem_of_bytes = len & 0x7f;
-    if numbem_of_bytes == 0 {
+    let number_of_bytes = len & 0x7f;
+    if number_of_bytes == 0 {
         return Err(U2fError::Asm1DecoderError);
     }
 
     let mut length: usize = 0;
-    for num in 0..numbem_of_bytes {
+    for num in 0..number_of_bytes {
         length = length * 0x100 + (buffer[(2 + num) as usize] as usize);
     }
 
-    length = length + (numbem_of_bytes as usize);
+    length = length + (number_of_bytes as usize);
 
     Ok(length + 2) // Add the 2 initial bytes: type and length.
 }
 
+/// Encode as URL-safe, no padding base64
+/// 
+/// ```rust
+/// use u2::util::get_encoded;
+/// 
+/// let message0 = b"My string!!";
+/// let encoded_string0 = get_encoded(message0);
+/// assert_eq!(encoded_string0, String::from("TXkgc3RyaW5nISE"));
+/// 
+/// let message1 = b"Weaponized assault penguins";
+/// let encoded_string1 = get_encoded(message1);
+/// assert_eq!(encoded_string1, String::from("V2VhcG9uaXplZCBhc3NhdWx0IHBlbmd1aW5z"));
+/// ```
 pub fn get_encoded(data: &[u8]) -> String {
     let encoded: String = encode_config(data, URL_SAFE_NO_PAD);
 

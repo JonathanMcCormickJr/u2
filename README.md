@@ -48,3 +48,7 @@ See provided [example](https://github.com/wisespace-io/u2f-rs/tree/master/exampl
 All constructive contributions are welcome!! Please raise an issue or make a pull request on GitHub. 
 
 Please note that by contributing, you agree that your contribution(s) may be integrated into this project and dual-licensed in the same way which the overall project is. See [LICENSE](./LICENSE) for more information. 
+
+Here are some of the biggest challenges:
+
+[ ] - Audit the `u2::util::asn_length()` function, as it may or may not be doing its job correctly. 
