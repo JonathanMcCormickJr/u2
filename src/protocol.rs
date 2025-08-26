@@ -10,6 +10,21 @@ use chrono::prelude::*;
 
 type Result<T> = ::std::result::Result<T, U2fError>;
 
+/// The challenge which the server sends to the client for authentication.
+///
+/// ```rust
+/// use u2::protocol;
+///
+/// let data0: &[u8] = &[
+/// 0x53, 0x12, 0x7a, 0x5e, 0x74, 0xfa, 0x88, 0x2e,
+/// 0xd0, 0xcd, 0xea, 0x0e, 0x86, 0x1b, 0x4b, 0xf7,
+/// 0x81, 0xc2, 0x42, 0xb3, 0xff, 0x08, 0x9d, 0x6c,
+/// 0xcb, 0x76, 0x87, 0xa2, 0x64, 0x01, 0x00, 0xf2,
+/// ];
+///
+/// let challenge0 = protocol::Challenge { app_id: String::from("https://example.com/u2f-app-id.json"), challenge: format!("{:?}", data0) /* This probably needs to be changed due to formatting that is not actually part of the spec */, timestamp: String::from("2025-08-26T14:32:07Z") };
+///
+/// ```
 #[derive(Deserialize, Serialize, Clone)]
 #[serde(rename_all = "camelCase")]
 pub struct Challenge {
@@ -23,7 +38,7 @@ pub struct U2f {
     app_id: String,
 }
 impl U2f {
-    // The app ID is a string used to uniquely identify an U2F app
+    /// The app ID is a string used to uniquely identify an U2F app
     pub fn new(app_id: String) -> Self {
         U2f { app_id: app_id }
     }
@@ -81,7 +96,7 @@ impl U2f {
         let client_data: Vec<u8> =
             decode_config(&response.client_data[..], URL_SAFE_NO_PAD).unwrap();
 
-        parse_registration(challenge.app_id, client_data, registration_data)
+        Registration::parse_registration(challenge.app_id, client_data, registration_data)
     }
 
     fn registered_keys(&self, registrations: Vec<Registration>) -> Vec<RegisteredKey> {
