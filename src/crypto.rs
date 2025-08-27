@@ -45,8 +45,8 @@ impl TryFrom<&[u8]> for X509PublicKey {
 
     // Must be DER bytes. If you have PEM, base64decode first!
     fn try_from(d: &[u8]) -> Result<Self, Self::Error> {
-        let pubk = x509::X509::from_der(d).map_err(|e| U2fError::OpenSSLError(e))?;
-        Ok(X509PublicKey { pubk: pubk })
+        let pubk = x509::X509::from_der(d).map_err(U2fError::OpenSSLError)?;
+        Ok(X509PublicKey { pubk })
     }
 }
 
@@ -69,14 +69,11 @@ impl X509PublicKey {
 
     pub(crate) fn is_secp256r1(&self) -> Result<bool, U2fError> {
         // Can we get the public key?
-        let pk = self
-            .pubk
-            .public_key()
-            .map_err(|e| U2fError::OpenSSLError(e))?;
+        let pk = self.pubk.public_key().map_err(U2fError::OpenSSLError)?;
 
-        let ec_key = pk.ec_key().map_err(|e| U2fError::OpenSSLError(e))?;
+        let ec_key = pk.ec_key().map_err(U2fError::OpenSSLError)?;
 
-        ec_key.check_key().map_err(|e| U2fError::OpenSSLError(e))?;
+        ec_key.check_key().map_err(U2fError::OpenSSLError)?;
 
         let ec_grpref = ec_key.group();
 
@@ -90,20 +87,15 @@ impl X509PublicKey {
         signature: &[u8],
         verification_data: &[u8],
     ) -> Result<bool, U2fError> {
-        let pkey = self
-            .pubk
-            .public_key()
-            .map_err(|e| U2fError::OpenSSLError(e))?;
+        let pkey = self.pubk.public_key().map_err(U2fError::OpenSSLError)?;
 
         // TODO: Should this determine the hash type from the x509 cert? Or other?
         let mut verifier = sign::Verifier::new(hash::MessageDigest::sha256(), &pkey)
-            .map_err(|e| U2fError::OpenSSLError(e))?;
+            .map_err(U2fError::OpenSSLError)?;
         verifier
             .update(verification_data)
-            .map_err(|e| U2fError::OpenSSLError(e))?;
-        verifier
-            .verify(signature)
-            .map_err(|e| U2fError::OpenSSLError(e))
+            .map_err(U2fError::OpenSSLError)?;
+        verifier.verify(signature).map_err(U2fError::OpenSSLError)
     }
 }
 
@@ -135,17 +127,17 @@ impl NISTP256Key {
 
     fn get_key(&self) -> Result<ec::EcKey<Public>, U2fError> {
         let ec_group = ec::EcGroup::from_curve_name(openssl::nid::Nid::X9_62_PRIME256V1)
-            .map_err(|e| U2fError::OpenSSLError(e))?;
+            .map_err(U2fError::OpenSSLError)?;
 
-        let xbn = bn::BigNum::from_slice(&self.x).map_err(|e| U2fError::OpenSSLError(e))?;
-        let ybn = bn::BigNum::from_slice(&self.y).map_err(|e| U2fError::OpenSSLError(e))?;
+        let xbn = bn::BigNum::from_slice(&self.x).map_err(U2fError::OpenSSLError)?;
+        let ybn = bn::BigNum::from_slice(&self.y).map_err(U2fError::OpenSSLError)?;
 
         let ec_key = openssl::ec::EcKey::from_public_key_affine_coordinates(&ec_group, &xbn, &ybn)
-            .map_err(|e| U2fError::OpenSSLError(e))?;
+            .map_err(U2fError::OpenSSLError)?;
 
         // Validate the key is sound. IIRC this actually checks the values
         // are correctly on the curve as specified
-        ec_key.check_key().map_err(|e| U2fError::OpenSSLError(e))?;
+        ec_key.check_key().map_err(U2fError::OpenSSLError)?;
 
         Ok(ec_key)
     }
@@ -158,11 +150,11 @@ impl NISTP256Key {
         let pkey = self.get_key()?;
 
         let signature =
-            openssl::ecdsa::EcdsaSig::from_der(signature).map_err(|e| U2fError::OpenSSLError(e))?;
-        let hash = openssl::sha::sha256(&verification_data);
+            openssl::ecdsa::EcdsaSig::from_der(signature).map_err(U2fError::OpenSSLError)?;
+        let hash = openssl::sha::sha256(verification_data);
 
         signature
             .verify(hash.as_ref(), &pkey)
-            .map_err(|e| U2fError::OpenSSLError(e))
+            .map_err(U2fError::OpenSSLError)
     }
 }

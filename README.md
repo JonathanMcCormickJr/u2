@@ -1,4 +1,4 @@
-# `u2`: a Rust U2F Library &emsp; 
+# `u2`: a Rust Authentication Library for U2F and FIDO2 &emsp; 
 
 [![MIT licensed]][MIT] [![Apache-2.0 licensed]][APACHE]
 
@@ -23,25 +23,16 @@ https://commons.wikimedia.org/wiki/File:Usaf.u2.750pix.jpg
 
 Forked from the [`u2f`](https://crates.io/crates/u2f) crate, which (as of this writing) has not been updated in years.
 
-This is still a work in progress as I journey through the existing code and adapt it to use up-to-date dependencies and hopefully compile. I also will need to add unit tests, which are currently lacking. 
+This is still a work in progress as I journey through the existing code and adapt it to use up-to-date dependencies, compile, test, and fit my style. I also have the ambition to not just cover U2F, but also the FIDO2 spec, but we'll see how that goes. ;)
 
 [MIT licensed]: https://img.shields.io/badge/License-MIT-blue.svg
 [MIT]: ./LICENSE-MIT
 [Apache-2.0 licensed]: https://img.shields.io/badge/License-Apache%202.0-blue.svg
 [APACHE]: ./LICENSE-APACHE
 
-## u2
-
-Rust [FIDO U2F](https://fidoalliance.org/specifications/download/) library is a simple server side implementation to register and check signatures provided by U2F clients/devices. See [U2F Technical Overview](https://developers.yubico.com/U2F/Protocol_details/Overview.html)
-
 ## Usage
 
-Add this to your Cargo.toml
-[ADD STUFF HERE]
-
-Make sure that you have read [Using a U2F library](https://developers.yubico.com/U2F/Libraries/Using_a_library.html) before continuing.
-
-See provided [example](https://github.com/wisespace-io/u2f-rs/tree/master/example)
+[DO NOT USE...yet]
 
 ## Contributing
 
@@ -49,6 +40,10 @@ All constructive contributions are welcome!! Please raise an issue or make a pul
 
 Please note that by contributing, you agree that your contribution(s) may be integrated into this project and dual-licensed in the same way which the overall project is. See [LICENSE](./LICENSE) for more information. 
 
+### Goals
+
 Here are some of the biggest challenges:
 
-[ ] - Audit the `u2::util::asn_length()` function, as it may or may not be doing its job correctly. 
+[ ] Audit the `u2::util::asn_length()` function, as it may or may not be doing its job correctly. 
+
+[ ] Get this crate aligned with the U2F and FIDO2 standards.

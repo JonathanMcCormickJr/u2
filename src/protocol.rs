@@ -40,7 +40,7 @@ pub struct U2f {
 impl U2f {
     /// The app ID is a string used to uniquely identify an U2F app
     pub fn new(app_id: String) -> Self {
-        U2f { app_id: app_id }
+        U2f { app_id }
     }
 
     pub fn generate_challenge(&self) -> Result<Challenge> {
@@ -49,7 +49,7 @@ impl U2f {
         let challenge_bytes = generate_challenge_randomness(32)?;
         let challenge = Challenge {
             challenge: encode_config(&challenge_bytes, URL_SAFE_NO_PAD),
-            timestamp: format!("{:?}", utc),
+            timestamp: format!("{utc:?}"),
             app_id: self.app_id.clone(),
         };
 
@@ -126,13 +126,11 @@ impl U2f {
             ));
         }
 
-        let signed_request = U2fSignRequest {
+        U2fSignRequest {
             app_id: self.app_id.clone(),
             challenge: encode_config(challenge.challenge.as_bytes(), URL_SAFE_NO_PAD),
             registered_keys: keys,
-        };
-
-        signed_request
+        }
     }
 
     pub fn sign_response(
@@ -169,12 +167,12 @@ impl U2f {
                 // CounterTooLow is raised when the counter value received from the device is
                 // lower than last stored counter value.
                 if res.counter < counter {
-                    return Err(U2fError::CounterTooLow);
+                    Err(U2fError::CounterTooLow)
                 } else {
-                    return Ok(res.counter);
+                    Ok(res.counter)
                 }
             }
-            Err(e) => return Err(e),
+            Err(e) => Err(e),
         }
     }
 }
