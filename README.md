@@ -1,4 +1,4 @@
-# `u2`: a Rust Authentication Library for U2F and FIDO2 &emsp; 
+# `u2`: a Rust Authentication Library for U2F and FIDO2 on the web &emsp; 
 
 [![MIT licensed]][MIT] [![Apache-2.0 licensed]][APACHE]
 
@@ -20,6 +20,8 @@ https://commons.wikimedia.org/wiki/File:Usaf.u2.750pix.jpg
 ⚠️ **CODE IS NOT TESTED**
 
 ⚠️ **DO NOT USE (YET)**
+
+⚠️ **CURRENTLY UNLIKELY TO WITHSTAND Y2Q**
 
 Forked from the [`u2f`](https://crates.io/crates/u2f) crate, which (as of this writing) has not been updated in years.
 
@@ -46,4 +48,4 @@ Here are some of the biggest challenges:
 
 [ ] Audit the `u2::util::asn_length()` function, as it may or may not be doing its job correctly. 
 
-[ ] Get this crate aligned with the U2F and FIDO2 standards.
+[ ] Get this crate aligned with the U2F and FIDO2 standards such that a web dev could use this crate and accept both U2F- and FIDO2-compatible authentication from users (https://www.w3.org/TR/webauthn/).
